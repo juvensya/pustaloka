@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\Ulasan;
 use App\Models\Buku;
 use App\Models\Kategori;
 
@@ -48,6 +48,14 @@ class PenggunaController extends Controller
 
   public function detail(Buku $buku)
 {
-    return view('pengguna.detail', compact('buku'));
+    $rating = Ulasan::where('buku_id', $buku->id)->avg('rating') ?? 0;
+    $totalUlasan = Ulasan::where('buku_id', $buku->id)->count();
+
+    $ulasans = Ulasan::with('user')
+        ->where('buku_id', $buku->id)
+        ->latest()
+        ->get();
+
+    return view('pengguna.detail', compact('buku','rating','totalUlasan','ulasans'));
 }
 }

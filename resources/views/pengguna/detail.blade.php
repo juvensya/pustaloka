@@ -54,6 +54,21 @@
 
                     <h4 class="mb-3">{{ $buku->judul }}</h4>
 
+                    {{-- RATING --}}
+                    <div class="mb-2">
+                        @for ($i = 1; $i <= 5; $i++)
+                            @if ($i <= round($rating))
+                                <span style="color:gold;">★</span>
+                            @else
+                                <span style="color:#ccc;">★</span>
+                            @endif
+                        @endfor
+
+                        <small class="text-muted">
+                            ({{ number_format($rating,1) }} / 5 dari {{ $totalUlasan }} ulasan)
+                        </small>
+                    </div>
+
                     <p>
                         <strong>Penulis:</strong> {{ $buku->penulis }} <br>
                         <strong>Penerbit:</strong> {{ $buku->penerbit }} <br>
@@ -82,7 +97,7 @@
                             Batas Peminjaman Tercapai
                         </button>
                         <div class="alert alert-warning mt-2" style="font-size:0.85rem;">
-                            ⚠️ Kamu sudah memiliki 2 peminjaman aktif. Kembalikan buku terlebih dahulu untuk meminjam lagi.
+                            ⚠️ Kamu sudah memiliki 2 peminjaman aktif.
                         </div>
                     @elseif($buku->stock > 0)
                         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalPinjam">
@@ -94,8 +109,7 @@
                         </button>
                     @endif
 
-                    <a href="{{ route('pengguna.index') }}" 
-                       class="btn btn-outline-secondary mt-2">
+                    <a href="{{ route('pengguna.index') }}" class="btn btn-outline-secondary mt-2">
                         Kembali
                     </a>
                     
@@ -114,18 +128,15 @@
 
 </div>
 
-
-{{-- ===================== MODAL KONFIRMASI PINJAM ===================== --}}
+{{-- ===================== MODAL PINJAM ===================== --}}
 @if($buku->stock > 0 && $peminjamAktif < 2)
-<div class="modal fade" id="modalPinjam" tabindex="-1" aria-labelledby="modalPinjamLabel" aria-hidden="true">
+<div class="modal fade" id="modalPinjam">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
 
             <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title" id="modalPinjamLabel">
-                    <i class="bi bi-book me-2"></i>Konfirmasi Peminjaman
-                </h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                <h5 class="modal-title">Konfirmasi Peminjaman</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
 
             <form action="{{ route('pinjam.store', $buku->id) }}" method="POST">
@@ -133,70 +144,18 @@
 
                 <div class="modal-body">
 
-                    {{-- Info Buku --}}
-                    <div class="mb-3 p-3 bg-light rounded">
-                        <h6 class="fw-bold text-primary mb-2">📚 Informasi Buku</h6>
-                        <table class="table table-sm table-borderless mb-0">
-                            <tr>
-                                <td class="text-muted" style="width:35%">Judul</td>
-                                <td>: <strong>{{ $buku->judul }}</strong></td>
-                            </tr>
-                            <tr>
-                                <td class="text-muted">Penulis</td>
-                                <td>: {{ $buku->penulis }}</td>
-                            </tr>
-                            <tr>
-                                <td class="text-muted">Penerbit</td>
-                                <td>: {{ $buku->penerbit }}</td>
-                            </tr>
-                        </table>
+                    <strong>{{ $buku->judul }}</strong>
+
+                    <div class="mt-3">
+                        <label>Tanggal Kembali</label>
+                        <input type="date"
+                               name="tanggal_kembali"
+                               class="form-control"
+                               max="{{ $maxKembali }}"
+                               required>
                     </div>
 
-                    {{-- Info Peminjam --}}
-                    <div class="mb-3 p-3 bg-light rounded">
-                        <h6 class="fw-bold text-primary mb-2">👤 Informasi Peminjam</h6>
-                        <table class="table table-sm table-borderless mb-0">
-                            <tr>
-                                <td class="text-muted" style="width:35%">Nama</td>
-                                <td>: <strong>{{ auth()->user()->name }}</strong></td>
-                            </tr>
-                            <tr>
-                                <td class="text-muted">Email</td>
-                                <td>: {{ auth()->user()->email }}</td>
-                            </tr>
-                        </table>
-                    </div>
-
-                    {{-- Tanggal --}}
-                    <div class="mb-3 p-3 bg-light rounded">
-                        <h6 class="fw-bold text-primary mb-2">📅 Tanggal Peminjaman</h6>
-
-                        <div class="mb-2">
-                            <label class="form-label text-muted small mb-1">Tanggal Pinjam</label>
-                            <input type="text" 
-                                   class="form-control form-control-sm bg-white" 
-                                   value="{{ \Carbon\Carbon::now('Asia/Jakarta')->isoFormat('D MMMM YYYY') }}" 
-                                   readonly disabled>
-                            <input type="hidden" name="tanggal_pinjam" value="{{ $today }}">
-                        </div>
-
-                        <div>
-                            <label for="tanggal_kembali" class="form-label text-muted small mb-1">
-                                Tanggal Kembali <span class="text-danger">*</span>
-                            </label>
-                            <input type="date"
-                                   id="tanggal_kembali"
-                                   name="tanggal_kembali"
-                                   class="form-control form-control-sm"
-                                   min="{{ \Carbon\Carbon::now('Asia/Jakarta')->addDay(1)->format('Y-m-d') }}"
-                                   max="{{ $maxKembali }}"
-                                   value="{{ $maxKembali }}"
-                                   required>
-                            <div class="form-text text-muted" style="font-size:0.78rem;">
-                                ⏳ Maksimal peminjaman <strong>14 hari</strong> dari hari ini (s/d {{ \Carbon\Carbon::now('Asia/Jakarta')->addDays(14)->isoFormat('D MMMM YYYY') }})
-                            </div>
-                        </div>
-                    </div>
+                    <input type="hidden" name="tanggal_pinjam" value="{{ $today }}">
 
                 </div>
 
@@ -205,7 +164,7 @@
                         Batal
                     </button>
                     <button type="submit" class="btn btn-primary">
-                        <i class="bi bi-check-circle me-1"></i>Konfirmasi Pinjam
+                        Konfirmasi Pinjam
                     </button>
                 </div>
 
@@ -215,5 +174,47 @@
     </div>
 </div>
 @endif
+
+
+{{-- ===================== ULASAN PEMBACA ===================== --}}
+<div class="container mt-4">
+
+<h5 class="mb-3">Ulasan Pembaca</h5>
+
+@if($ulasans->count() > 0)
+
+    @foreach($ulasans as $ulasan)
+
+        <div class="card mb-3 shadow-sm">
+            <div class="card-body">
+
+                <strong>{{ $ulasan->user->name }}</strong>
+
+                <div>
+                    @for ($i = 1; $i <= 5; $i++)
+                        @if ($i <= $ulasan->rating)
+                            <span style="color:gold;">★</span>
+                        @else
+                            <span style="color:#ccc;">★</span>
+                        @endif
+                    @endfor
+                </div>
+
+                <p class="mt-2 mb-0">
+                    {{ $ulasan->komentar }}
+                </p>
+
+            </div>
+        </div>
+
+    @endforeach
+
+@else
+
+<p class="text-muted">Belum ada ulasan untuk buku ini.</p>
+
+@endif
+
+</div>
 
 @endsection

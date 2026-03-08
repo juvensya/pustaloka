@@ -8,6 +8,7 @@ use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\KoleksiController;
 use App\Http\Controllers\PeminjamanController;
 use App\Http\Controllers\AkunController;
+use App\Http\Controllers\UlasanController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -82,6 +83,27 @@ Route::middleware(['auth', 'role:pengguna'])->group(function () {
     Route::patch('/peminjaman/{peminjaman}/kembali', [PeminjamanController::class, 'requestKembali'])->name('peminjaman.requestKembali');
     Route::delete('/pengguna/peminjaman/{peminjaman}', [PeminjamanController::class, 'destroy'])->name('peminjaman.destroy');
 
+    Route::get('/peminjaman/{peminjaman}/bukti-pdf', [PeminjamanController::class, 'downloadBukti'])->name('peminjaman.buktiPdf');
+
+
+
+/* halaman tulis ulasan */
+Route::get('/ulasan/{buku_id}', [UlasanController::class, 'create'])->name('ulasan.create');
+
+/* simpan ulasan */
+Route::post('/ulasan', [UlasanController::class, 'store'])->name('ulasan.store');
+
+/* daftar ulasan user */
+Route::get('/pengguna/ulasan', [UlasanController::class, 'index'])->name('ulasan.index');
+
+/* edit ulasan */
+Route::get('/pengguna/ulasan/{ulasan}/edit', [UlasanController::class, 'edit'])->name('ulasan.edit');
+
+/* UPDATE ULASAN (INI YANG KAMU BELUM ADA) */
+Route::put('/pengguna/ulasan/{ulasan}', [UlasanController::class, 'update'])->name('ulasan.update');
+
+/* hapus ulasan */
+Route::delete('/pengguna/ulasan/{ulasan}', [UlasanController::class, 'destroy'])->name('ulasan.destroy');
 });
 
 

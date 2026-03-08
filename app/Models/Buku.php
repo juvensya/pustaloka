@@ -33,4 +33,9 @@ public function detail(Buku $buku)
     {
         return $this->hasMany(Peminjaman::class);
     }
+
+    public function ulasans()
+{
+    return $this->hasMany(Ulasan::class);
+}
 }

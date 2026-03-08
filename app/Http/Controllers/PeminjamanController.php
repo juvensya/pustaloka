@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Peminjaman;
 use App\Models\Buku;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 
 class PeminjamanController extends Controller
@@ -69,14 +70,25 @@ class PeminjamanController extends Controller
             return back()->with('error', 'Akses tidak diizinkan.');
         }
 
-        if ($peminjaman->status !== 'disetujui') {
-            return back()->with('error', 'Peminjaman tidak dapat dikembalikan saat ini.');
+        if (!in_array($peminjaman->status, ['disetujui', 'terlambat'])) {
+        
         }
 
         $peminjaman->status = 'menunggu_kembali';
         $peminjaman->save();
 
         return back()->with('success', 'Permintaan pengembalian berhasil dikirim! Silakan kembalikan buku ke perpustakaan.');
+    }
+
+    
+    public function downloadBukti(Peminjaman $peminjaman)
+    {
+        if ($peminjaman->user_id !== auth()->id()) {
+            abort(403);
+        }
+
+        $pdf = Pdf::loadView('pengguna.bukti-pdf', compact('peminjaman'));
+        return $pdf->download('bukti-peminjaman.pdf');
     }
 
     /*
