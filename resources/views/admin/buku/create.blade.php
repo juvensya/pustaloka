@@ -7,19 +7,13 @@
         @include('layout.sidebar')
 
         {{-- Main Content --}}
-        <div class="col p-4" style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); height: 100vh; overflow: hidden;">
+        <div class="col p-0" style="background:#f8f9fa;min-height:100vh;">
 
+            @include('layout.navbar')
+
+            {{-- Content area dengan padding --}}
+            <div style="padding:1.5rem;">
             <div style="display: flex; flex-direction: column; height: 100%; max-width: 1400px; margin: 0 auto;">
-                
-                {{-- Header --}}
-                <div style="margin-bottom: 1rem;">
-                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 0.5rem;">
-                        <div style="width: 4px; height: 40px; background: #8B0000; border-radius: 2px;"></div>
-                        <div>
-                            <h2 style="font-size: 1.75rem; font-weight: 800; color: #2c3e50; margin: 0; letter-spacing: -0.5px;">Tambah Buku Baru</h2>
-                        </div>
-                    </div>
-                </div>
 
                 {{-- Card Form --}}
                 <div style="background: white; border-radius: 20px; box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08); flex: 1; display: flex; flex-direction: column; overflow: hidden; border: 1px solid #dee2e6;">
@@ -58,22 +52,24 @@
                                     </h4>
 
                                     <div style="display: flex; flex-direction: column; gap: 1rem; flex: 1;">
+                                        
                                         {{-- Kategori --}}
                                         <div>
-                                            <label style="display: block; font-weight: 600; color: #2c3e50; margin-bottom: 0.5rem; font-size: 0.85rem;">
-                                                Kategori <span style="color: #dc3545; font-weight: 800;">*</span>
+                                            <label style="display:block;font-weight:600;color:#2c3e50;margin-bottom:0.5rem;font-size:0.85rem;">
+                                                Kategori <span style="color:#dc3545;font-weight:800;">*</span>
                                             </label>
-                                            <select name="kategori_id" required 
-                                                    style="width: 100%; padding: 10px 12px; border: 2px solid #e9ecef; border-radius: 8px; font-size: 0.85rem; outline: none; background: white; transition: all 0.3s; font-weight: 500;"
-                                                    onfocus="this.style.borderColor='#adb5bd'; this.style.boxShadow='0 0 0 3px rgba(173, 181, 189, 0.1)'"
-                                                    onblur="this.style.borderColor='#e9ecef'; this.style.boxShadow='none'">
-                                                <option value="">-- Pilih Kategori --</option>
-                                                @foreach ($kategoris as $kategori)
-                                                    <option value="{{ $kategori->id }}" {{ old('kategori_id') == $kategori->id ? 'selected' : '' }}>
+                                            <div style="display:flex;flex-wrap:wrap;gap:8px;">
+                                                @foreach($kategoris as $kategori)
+                                                    <label style="display:flex;align-items:center;gap:6px;padding:6px 12px;border:2px solid #e9ecef;border-radius:8px;cursor:pointer;font-size:0.85rem;font-weight:500;">
+                                                        <input type="checkbox"
+                                                            name="kategori_ids[]"
+                                                            value="{{ $kategori->id }}"
+                                                            {{ in_array($kategori->id, old('kategori_ids', [])) ? 'checked' : '' }}
+                                                            style="accent-color:#8B0000;">
                                                         {{ $kategori->nama_kategori }}
-                                                    </option>
+                                                    </label>
                                                 @endforeach
-                                            </select>
+                                            </div>
                                         </div>
 
                                         {{-- Judul --}}

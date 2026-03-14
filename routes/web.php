@@ -51,14 +51,11 @@ Route::get('/dashboard', function () {
 
 Route::middleware('auth')->group(function () {
 
-    Route::get('/profile', [ProfileController::class, 'edit'])
-        ->name('profile.edit');
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
 
-    Route::patch('/profile', [ProfileController::class, 'update'])
-        ->name('profile.update');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
 
-    Route::delete('/profile', [ProfileController::class, 'destroy'])
-        ->name('profile.destroy');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
 });
 
@@ -86,25 +83,13 @@ Route::middleware(['auth', 'role:pengguna'])->group(function () {
     Route::delete('/peminjaman/{id}/cancel', [PinjamController::class, 'cancel'])->name('pinjam.cancel');
     Route::get('/peminjaman/{peminjaman}/bukti-pdf', [PeminjamanController::class, 'downloadBukti'])->name('peminjaman.buktiPdf');
 
-
-
-/* halaman tulis ulasan */
-Route::get('/ulasan/{buku_id}', [UlasanController::class, 'create'])->name('ulasan.create');
-
-/* simpan ulasan */
-Route::post('/ulasan', [UlasanController::class, 'store'])->name('ulasan.store');
-
-/* daftar ulasan user */
-Route::get('/pengguna/ulasan', [UlasanController::class, 'index'])->name('ulasan.index');
-
-/* edit ulasan */
-Route::get('/pengguna/ulasan/{ulasan}/edit', [UlasanController::class, 'edit'])->name('ulasan.edit');
-
-/* UPDATE ULASAN (INI YANG KAMU BELUM ADA) */
-Route::put('/pengguna/ulasan/{ulasan}', [UlasanController::class, 'update'])->name('ulasan.update');
-
-/* hapus ulasan */
-Route::delete('/pengguna/ulasan/{ulasan}', [UlasanController::class, 'destroy'])->name('ulasan.destroy');
+    //ULASAN
+    Route::get('/pengguna/ulasan', [UlasanController::class, 'index'])->name('ulasan.index');
+    Route::get('/ulasan/{buku_id}', [UlasanController::class, 'create'])->name('ulasan.create');
+    Route::post('/ulasan', [UlasanController::class, 'store'])->name('ulasan.store');
+    Route::get('/pengguna/ulasan/{ulasan}/edit', [UlasanController::class, 'edit'])->name('ulasan.edit');
+    Route::put('/pengguna/ulasan/{ulasan}', [UlasanController::class, 'update'])->name('ulasan.update');
+    Route::delete('/pengguna/ulasan/{ulasan}', [UlasanController::class, 'destroy'])->name('ulasan.destroy');
 });
 
 
@@ -162,9 +147,7 @@ Route::delete('/admin/peminjaman/{peminjaman}',
     [PeminjamanController::class, 'destroy'])
     ->name('admin.peminjaman.destroy');
     
-    Route::get('/admin/peminjaman',
-    [PeminjamanController::class, 'indexAdmin'])
-    ->name('admin.peminjaman.index');
+
 
 Route::get('/admin/pengembalian',
     [PeminjamanController::class, 'pengembalian'])

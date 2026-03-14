@@ -5,7 +5,13 @@
     <div class="row">
         @include('layout.sidebar')
 
-        <div class="col p-4" style="background: #f8f9fa; min-height: 100vh;">
+        <!-- Main Content -->
+        <div class="col p-0" style="background:#f8f9fa;min-height:100vh;">
+
+            @include('layout.navbar')
+
+            {{-- Content area dengan padding --}}
+            <div style="padding:1.5rem;">
 
             <!-- Header -->
             <div style="margin-bottom: 2rem;">

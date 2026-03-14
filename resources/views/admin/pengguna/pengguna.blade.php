@@ -6,7 +6,13 @@
     <div class="row">
         @include('layout.sidebar')
 
-        <div class="col p-4" style="background:#f8f9fa;min-height:100vh;">
+         <!-- Main Content -->
+        <div class="col p-0" style="background:#f8f9fa;min-height:100vh;">
+
+            @include('layout.navbar')
+
+            {{-- Content area dengan padding --}}
+            <div style="padding:1.5rem;">
 
             <!-- Header -->
             <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;margin-bottom:1.5rem;">
@@ -88,7 +94,7 @@
 
                                 <!-- Tanggal Daftar -->
                                 <td style="padding:1.1rem 1.5rem;font-size:0.95rem;color:#666;vertical-align:middle;white-space:nowrap;">
-                                    {{ $user->created_at->format('d F Y') }}
+                                    {{ $user->created_at->format('d M Y') }}
                                 </td>
 
                                 <!-- Aksi -->

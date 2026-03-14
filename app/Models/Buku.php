@@ -10,7 +10,6 @@ class Buku extends Model
     protected $table = 'bukus';
 
     protected $fillable = [
-        'kategori_id',
         'judul',
         'penulis',
         'penerbit',
@@ -19,14 +18,10 @@ class Buku extends Model
         'gambar',
         'stock',
     ];
-public function detail(Buku $buku)
-{
-    return view('pengguna.detail', compact('buku'));
-}
-    public function kategori()
+
+    public function kategoris()
     {
-        return $this->belongsTo(Kategori::class, 'kategori_id');
-        
+        return $this->belongsToMany(Kategori::class, 'kategori_relasi', 'buku_id', 'kategori_id');
     }
 
     public function peminjamans()
@@ -35,7 +30,7 @@ public function detail(Buku $buku)
     }
 
     public function ulasans()
-{
-    return $this->hasMany(Ulasan::class);
-}
+    {
+        return $this->hasMany(Ulasan::class);
+    }
 }

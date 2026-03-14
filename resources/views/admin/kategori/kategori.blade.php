@@ -7,7 +7,12 @@
         @include('layout.sidebar')
         
         <!-- Main Content Area -->
-        <div class="col p-4" style="background: #f8f9fa; min-height: 100vh;">
+        <div class="col p-0" style="background:#f8f9fa;min-height:100vh;">
+
+            @include('layout.navbar')
+
+            {{-- Content area dengan padding --}}
+            <div style="padding:1.5rem;">
 
             <!-- Header -->
             <div style="margin-bottom: 2rem;">
@@ -81,7 +86,7 @@
                                 <td style="padding: 1rem 1.5rem; color: #6c757d; font-size: 0.9rem;">{{ $index + 1 }}</td>
                                 <td style="padding: 1rem 1.5rem;">
                                     <div style="display: flex; align-items: center; gap: 10px;">
-                                        <span style="font-size: 1.3rem;">🏷️</span>
+                                        
                                         <span style="font-weight: 600; color: #2c3e50;">{{ $kategori->nama_kategori }}</span>
                                     </div>
                                 </td>
@@ -96,7 +101,7 @@
                                             <a href="{{ route('kategori.edit', $kategori->id) }}"
                                                 style="display: flex; align-items: center; gap: 8px; padding: 10px 16px; color: #2c3e50; text-decoration: none; font-size: 0.875rem;"
                                                 onmouseover="this.style.background='#f8f9fa'" onmouseout="this.style.background='white'">
-                                                ✏️ Edit
+                                                Edit
                                             </a>
                                             <form action="{{ route('kategori.destroy', $kategori->id) }}" method="POST"
                                                 onsubmit="return confirm('Apakah Anda yakin ingin menghapus kategori ini?')">
@@ -105,7 +110,7 @@
                                                 <button type="submit"
                                                     style="display: flex; align-items: center; gap: 8px; width: 100%; padding: 10px 16px; color: #dc3545; background: none; border: none; cursor: pointer; font-size: 0.875rem; font-family: inherit;"
                                                     onmouseover="this.style.background='#fff5f5'" onmouseout="this.style.background='white'">
-                                                    🗑️ Hapus
+                                                    Hapus
                                                 </button>
                                             </form>
                                         </div>

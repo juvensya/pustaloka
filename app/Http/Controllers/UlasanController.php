@@ -24,16 +24,17 @@ class UlasanController extends Controller
         return view('pengguna.ulasan.tambahUlasan', compact('buku_id'));
     }
 
-    public function store(Request $request)
+   public function store(Request $request)
     {
-        Ulasan::create([
-            'user_id' => Auth::id(),
-            'buku_id' => $request->buku_id,
-            'rating' => $request->rating,
-            'komentar' => $request->komentar
-        ]);
+    Ulasan::create([
+        'user_id' => Auth::id(),
+        'buku_id' => $request->buku_id,
+        'rating'  => $request->rating,
+        'komentar'=> $request->komentar
+    ]);
 
-        return back();
+    return redirect()->route('pengguna.buku.detail', $request->buku_id)
+        ->with('success', 'Ulasan berhasil ditambahkan!');
     }
 
     public function destroy($id)

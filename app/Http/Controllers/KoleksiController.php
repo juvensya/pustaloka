@@ -13,20 +13,13 @@ class KoleksiController extends Controller
 
     public function store($buku_id)
     {
-        $user = Auth::user();
-
-        $sudahAda = Koleksi::where('user_id', $user->id)
-            ->where('buku_id', $buku_id)
-            ->exists();
-
-        if (!$sudahAda) {
-            Koleksi::create([
-                'user_id' => $user->id,
-                'buku_id' => $buku_id
-            ]);
-        }
-
-        return back();
+    $user = Auth::user();
+    $sudahAda = Koleksi::where('user_id', $user->id)->where('buku_id', $buku_id)->exists();
+    if (!$sudahAda) {
+        Koleksi::create(['user_id' => $user->id, 'buku_id' => $buku_id]);
+        return back()->with('success', 'Buku berhasil ditambahkan ke koleksi!');
+    }
+    return back()->with('error', 'Buku sudah ada di koleksi kamu.');
     }
 
     public function destroy($buku_id)
@@ -40,7 +33,7 @@ class KoleksiController extends Controller
 
     public function index()
     {
-        $koleksi = auth()->user()->bukuKoleksi()->with('kategori')->get();
-    return view('pengguna.koleksi', compact('koleksi'));
+        $koleksi = auth()->user()->bukuKoleksi()->with('kategoris')->get();
+        return view('pengguna.koleksi', compact('koleksi'));
     }
 }

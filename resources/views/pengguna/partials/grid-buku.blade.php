@@ -15,7 +15,7 @@
         <div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(to top, rgba(0,0,0,0.85), transparent);padding:1rem 0.875rem 0.875rem;">
             <h5 style="font-size:0.9rem;font-weight:700;color:white;margin:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">{{ $buku->judul }}</h5>
             <p style="font-size:0.78rem;color:rgba(255,255,255,0.8);margin:2px 0 0;">{{ $buku->penulis }}</p>
-            <span style="font-size:0.72rem;color:rgba(255,255,255,0.6);">{{ $buku->kategori->nama_kategori }}</span>
+            <span style="font-size:0.72rem;color:rgba(255,255,255,0.6);">{{ $buku->kategoris->pluck('nama_kategori')->join(', ') }}</span>
         </div>
 
         <a href="{{ route('pengguna.buku.detail', $buku->id) }}"

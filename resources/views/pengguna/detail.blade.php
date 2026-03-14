@@ -57,39 +57,47 @@
     <div class="row g-4">
 
         {{-- COVER --}}
-      {{-- COVER --}}
-<div class="col-md-4">
-    <div style="background:#fff;border-radius:16px;border:1px solid #e9e9eb;overflow:hidden;">
-        @if($buku->gambar)
-            <img src="{{ asset('uploads/buku/' . $buku->gambar) }}"
-                 style="width:100%;display:block;object-fit:contain;background:#fafafa;"
-                 alt="Cover Buku">
-        @else
-            <img src="{{ asset('images/no-image.png') }}"
-                 style="width:100%;display:block;object-fit:contain;background:#fafafa;"
-                 alt="Tidak ada gambar">
-        @endif
+        <div class="col-md-4">
+            <div style="background:#fff;border-radius:16px;border:1px solid #e9e9eb;overflow:hidden;">
+                @if($buku->gambar)
+                    <img src="{{ asset('uploads/buku/' . $buku->gambar) }}"
+                         style="width:100%;display:block;object-fit:contain;background:#fafafa;"
+                         alt="Cover Buku">
+                @else
+                    <img src="{{ asset('images/no-image.png') }}"
+                         style="width:100%;display:block;object-fit:contain;background:#fafafa;"
+                         alt="Tidak ada gambar">
+                @endif
 
-        <div style="padding:1rem 1.25rem;border-top:1px solid #f0f0f0;display:flex;align-items:center;justify-content:space-between;">
-            <span style="font-size:0.78rem;font-weight:600;color:#888;">Stok Tersedia</span>
-            @if($buku->stock > 0)
-                <span style="background:#fff0f0;color:#8B0000;font-size:0.82rem;font-weight:700;padding:0.3rem 0.75rem;border-radius:20px;">{{ $buku->stock }} buku</span>
-            @else
-                <span style="background:#f4f4f5;color:#999;font-size:0.82rem;font-weight:700;padding:0.3rem 0.75rem;border-radius:20px;">Habis</span>
-            @endif
+                <div style="padding:1rem 1.25rem;border-top:1px solid #f0f0f0;display:flex;align-items:center;justify-content:space-between;">
+                    <span style="font-size:0.78rem;font-weight:600;color:#888;">Stok Tersedia</span>
+                    @if($buku->stock > 0)
+                        <span style="background:#fff0f0;color:#8B0000;font-size:0.82rem;font-weight:700;padding:0.3rem 0.75rem;border-radius:20px;">{{ $buku->stock }} buku</span>
+                    @else
+                        <span style="background:#f4f4f5;color:#999;font-size:0.82rem;font-weight:700;padding:0.3rem 0.75rem;border-radius:20px;">Habis</span>
+                    @endif
+                </div>
+            </div>
         </div>
-    </div>
-</div>
 
         {{-- DETAIL --}}
         <div class="col-md-8">
             <div style="background:#fff;border-radius:16px;border:1px solid #e9e9eb;padding:2rem;">
 
-                <span style="background:#fff0f0;color:#8B0000;font-size:0.72rem;font-weight:700;padding:0.3rem 0.75rem;border-radius:20px;text-transform:uppercase;letter-spacing:0.05em;">
-                    {{ $buku->kategori->nama_kategori ?? 'Umum' }}
-                </span>
+                {{-- Kategori Badge --}}
+                <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:0.75rem;">
+                    @forelse($buku->kategoris as $kat)
+                        <span style="background:#fff0f0;color:#8B0000;font-size:0.72rem;font-weight:700;padding:0.3rem 0.75rem;border-radius:20px;text-transform:uppercase;letter-spacing:0.05em;">
+                            {{ $kat->nama_kategori }}
+                        </span>
+                    @empty
+                        <span style="background:#f4f4f5;color:#999;font-size:0.72rem;font-weight:700;padding:0.3rem 0.75rem;border-radius:20px;text-transform:uppercase;letter-spacing:0.05em;">
+                            Tidak ada kategori
+                        </span>
+                    @endforelse
+                </div>
 
-                <h3 style="font-size:1.6rem;font-weight:800;color:#141516;margin:0.75rem 0 0.25rem;letter-spacing:-0.5px;">{{ $buku->judul }}</h3>
+                <h3 style="font-size:1.6rem;font-weight:800;color:#141516;margin:0 0 0.25rem;letter-spacing:-0.5px;">{{ $buku->judul }}</h3>
                 <p style="color:#888;font-size:0.9rem;margin:0 0 1rem;">{{ $buku->penulis }}</p>
 
                 {{-- RATING --}}
@@ -127,55 +135,67 @@
 
                 <div style="height:1px;background:#f0f0f0;margin-bottom:1.25rem;"></div>
 
-                
                 {{-- ACTIONS --}}
-<div style="display:flex;flex-direction:column;gap:0.75rem;">
+                <div style="display:flex;flex-direction:column;gap:0.75rem;">
 
-    @if($peminjamAktif >= 2)
-        <div style="background:#fff8f8;border:1px solid #fcd0d0;border-radius:8px;padding:0.65rem 0.9rem;font-size:0.8rem;color:#c0392b;display:flex;align-items:center;gap:7px;">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-            Kamu masih punya 2 peminjaman aktif. Kembalikan dulu sebelum meminjam lagi.
-        </div>
-    @endif
+                    @if($peminjamAktif >= 2)
+                        <div style="background:#fff8f8;border:1px solid #fcd0d0;border-radius:8px;padding:0.65rem 0.9rem;font-size:0.8rem;color:#c0392b;display:flex;align-items:center;gap:7px;">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                            Kamu masih punya 2 peminjaman aktif. Kembalikan dulu sebelum meminjam lagi.
+                        </div>
+                    @endif
 
-    <div style="display:flex;flex-wrap:wrap;gap:0.75rem;align-items:center;">
+                    <div style="display:flex;flex-wrap:wrap;gap:0.75rem;align-items:center;">
 
-        @if($peminjamAktif >= 2)
-            <button disabled style="display:inline-flex;align-items:center;gap:7px;padding:0.7rem 1.4rem;background:#e9e9eb;color:#aaa;border:none;border-radius:9px;font-size:0.85rem;font-weight:700;cursor:not-allowed;">
-                Batas Peminjaman Tercapai
-            </button>
-        @elseif($buku->stock > 0)
-            <button type="button"
-                data-bs-toggle="modal" data-bs-target="#modalPinjam"
-                style="display:inline-flex;align-items:center;gap:7px;padding:0.7rem 1.4rem;background:#8B0000;color:#fff;border:none;border-radius:9px;font-size:0.85rem;font-weight:700;cursor:pointer;">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-                Pinjam Buku
-            </button>
-        @else
-            <button disabled style="display:inline-flex;align-items:center;gap:7px;padding:0.7rem 1.4rem;background:#e9e9eb;color:#aaa;border:none;border-radius:9px;font-size:0.85rem;font-weight:700;cursor:not-allowed;">
-                Stok Habis
-            </button>
-        @endif
+                        @if($peminjamAktif >= 2)
+                            <button disabled style="display:inline-flex;align-items:center;gap:7px;padding:0.7rem 1.4rem;background:#e9e9eb;color:#aaa;border:none;border-radius:9px;font-size:0.85rem;font-weight:700;cursor:not-allowed;">
+                                Batas Peminjaman Tercapai
+                            </button>
+                        @elseif($buku->stock > 0)
+                            <button type="button"
+                                data-bs-toggle="modal" data-bs-target="#modalPinjam"
+                                style="display:inline-flex;align-items:center;gap:7px;padding:0.7rem 1.4rem;background:#8B0000;color:#fff;border:none;border-radius:9px;font-size:0.85rem;font-weight:700;cursor:pointer;">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                                Pinjam Buku
+                            </button>
+                        @else
+                            <button disabled style="display:inline-flex;align-items:center;gap:7px;padding:0.7rem 1.4rem;background:#e9e9eb;color:#aaa;border:none;border-radius:9px;font-size:0.85rem;font-weight:700;cursor:not-allowed;">
+                                Stok Habis
+                            </button>
+                        @endif
 
-        <form action="{{ route('koleksi.store', $buku->id) }}" method="POST">
-            @csrf
-            <button type="submit"
-                style="display:inline-flex;align-items:center;gap:7px;padding:0.7rem 1.4rem;background:#fff;color:#8B0000;border:1.5px solid #8B0000;border-radius:9px;font-size:0.85rem;font-weight:700;cursor:pointer;">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
-                Simpan ke Koleksi
-            </button>
-        </form>
+                        {{-- Tombol Koleksi --}}
+                        @if($diKoleksi)
+                            <form action="{{ route('koleksi.destroy', $buku->id) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit"
+                                    style="display:inline-flex;align-items:center;gap:7px;padding:0.7rem 1.4rem;background:#fff8f8;color:#c0392b;border:1.5px solid #fcd0d0;border-radius:9px;font-size:0.85rem;font-weight:700;cursor:pointer;">
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/><line x1="9" y1="10" x2="15" y2="10"/></svg>
+                                    Hapus dari Koleksi
+                                </button>
+                            </form>
+                        @else
+                            <form action="{{ route('koleksi.store', $buku->id) }}" method="POST">
+                                @csrf
+                                <button type="submit"
+                                    style="display:inline-flex;align-items:center;gap:7px;padding:0.7rem 1.4rem;background:#fff;color:#8B0000;border:1.5px solid #8B0000;border-radius:9px;font-size:0.85rem;font-weight:700;cursor:pointer;">
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+                                    Simpan ke Koleksi
+                                </button>
+                            </form>
+                        @endif
 
-    </div>
+                    </div>
 
-</div>
+                </div>
 
             </div>
         </div>
 
     </div>
 
-    {{-- ===================== MODAL PINJAM ===================== --}}
+    {{-- MODAL PINJAM --}}
     @if($buku->stock > 0 && $peminjamAktif < 2)
     <div class="modal fade" id="modalPinjam" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" style="max-width:480px;">
@@ -248,7 +268,7 @@
     </div>
     @endif
 
-    {{-- ===================== ULASAN ===================== --}}
+    {{-- ULASAN --}}
     <div style="margin-top:2.5rem;">
 
         <div style="display:flex;align-items:center;gap:12px;margin-bottom:1.25rem;">

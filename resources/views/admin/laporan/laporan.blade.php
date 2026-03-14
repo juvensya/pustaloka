@@ -4,7 +4,14 @@
 <div class="container-fluid">
 <div class="row">
 @include('layout.sidebar')
-<div class="col p-4" style="background:#f4f4f5;min-height:100vh;">
+
+    {{-- Main Content --}}
+        <div class="col p-0" style="background:#f8f9fa;min-height:100vh;">
+
+            @include('layout.navbar')
+
+            {{-- Content area dengan padding --}}
+            <div style="padding:1.5rem;">
 
     {{-- Header --}}
     <div style="display:flex;align-items:center;gap:12px;margin-bottom:2rem;">

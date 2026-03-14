@@ -1,15 +1,16 @@
 @extends('layout.app')
 
 @section('content')
-<div class="container-fluid" style="font-family:'Plus Jakarta Sans',sans-serif;">
+<div class="container-fluid">
     <div class="row">
-        <!-- Sidebar -->
+        {{-- Sidebar --}}
         @include('layout.sidebar')
+
 
         <!-- Main Content -->
         <div class="col p-0" style="background:#f8f9fa;min-height:100vh;">
 
-           
+            @include('layout.navbar')
 
             {{-- Content area dengan padding --}}
             <div style="padding:1.5rem;">

@@ -8,7 +8,14 @@
         @include('layout.sidebar')
         
         <!-- Main Content Area -->
-        <div class="col" style="margin-left: 0px;">
+         <!-- Main Content -->
+        <div class="col p-0" style="background:#f8f9fa;min-height:100vh;">
+
+            @include('layout.navbar')
+
+            {{-- Content area dengan padding --}}
+            <div style="padding:1.5rem;">
+                
             <!-- Dashboard Content -->
             <div class="container-fluid p-4">
                <!-- Header -->

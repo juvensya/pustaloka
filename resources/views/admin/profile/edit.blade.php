@@ -9,13 +9,12 @@
         @include('layout.sidebar')
 
         {{-- Main Content --}}
-        <div class="col-md-10" style="height: 100vh; display: flex; flex-direction: column; overflow: hidden; padding: 0;">
+        <div class="col p-0" style="background:#f8f9fa;min-height:100vh;">
 
-            {{-- Top Bar --}}
-            <div style="display: flex; align-items: center; gap: 10px; padding: 14px 32px; background: #fff; border-bottom: 1px solid #f0e8e8; flex-shrink: 0;">
-                <div style="width: 4px; height: 22px; background: #8B0000; border-radius: 2px;"></div>
-                <h4 style="margin: 0; font-size: 18px; font-weight: 700; color: #1a0000;">Profile</h4>
-            </div>
+            @include('layout.navbar')
+
+            {{-- Content area dengan padding --}}
+            <div style="padding:1.5rem;">
 
             {{-- Body --}}
             <div style="flex: 1; overflow: hidden; background: #f8f8f8; padding: 16px 32px; display: flex; flex-direction: column; gap: 12px;">

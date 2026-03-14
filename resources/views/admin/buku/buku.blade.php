@@ -9,7 +9,7 @@
         {{-- Main Content --}}
         <div class="col p-0" style="background: #f8f9fa; min-height: 100vh;">
 
-            
+            @include('layout.navbar')
 
             {{-- Content area --}}
             <div style="padding:1.5rem;">
@@ -27,7 +27,7 @@
 
                 {{-- Success Alert --}}
                 @if(session('success'))
-                    <div id="success-alert" style="background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%); color: #155724; padding: 15px 20px; border-radius: 10px; margin-bottom: 25px; display: flex; align-items: center; gap: 12px; border-left: 4px solid #28a745; animation: slideDown 0.4s ease; font-weight: 500;">
+                    <div id="success-alert" style="background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%); color: #155724; padding: 15px 20px; border-radius: 10px; margin-bottom: 25px; display: flex; align-items: center; gap: 12px; border-left: 4px solid #28a745; font-weight: 500;">
                         <span style="font-size: 1.5rem; background: #28a745; color: white; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">✓</span>
                         {{ session('success') }}
                     </div>
@@ -98,9 +98,13 @@
                                     <td style="padding: 1rem 1.5rem; color: #666;">{{ $buku->penerbit }}</td>
                                     <td style="padding: 1rem 1.5rem; color: #666;">{{ $buku->tahun_terbit }}</td>
                                     <td style="padding: 1rem 1.5rem;">
-                                        <span style="background: #ffe5e5; color: #8B0000; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 600;">
-                                            {{ $buku->kategori->nama_kategori ?? 'Tidak ada' }}
-                                        </span>
+                                        @forelse($buku->kategoris as $kat)
+                                            <span style="background: #ffe5e5; color: #8B0000; padding: 3px 10px; border-radius: 20px; font-size: 0.78rem; font-weight: 600; display: inline-block; margin: 2px;">
+                                                {{ $kat->nama_kategori }}
+                                            </span>
+                                        @empty
+                                            <span style="color: #aaa; font-size: 0.85rem;">Tidak ada</span>
+                                        @endforelse
                                     </td>
                                     <td style="padding: 1rem 1.5rem; text-align: center;">
                                         <span style="background: {{ $buku->stock > 0 ? '#d4edda' : '#f8d7da' }}; color: {{ $buku->stock > 0 ? '#155724' : '#721c24' }}; padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: 700;">
