@@ -48,9 +48,11 @@
                     <table style="width:100%;border-collapse:collapse;">
                         <thead>
                             <tr style="background:#f8f9fa;border-bottom:2px solid #e9ecef;">
-                                @foreach(['No','Pengguna','Tanggal Daftar',''] as $h)
-                                <th style="padding:1.1rem 1.5rem;text-align:{{ $loop->last ? 'center' : 'left' }};font-size:0.85rem;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:#6c757d;">{{ $h }}</th>
-                                @endforeach
+                                <th style="padding:1.1rem 1.5rem;text-align:left;font-size:0.85rem;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:#6c757d;">No</th>
+                                <th style="padding:1.1rem 1.5rem;text-align:left;font-size:0.85rem;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:#6c757d;">Pengguna</th>
+                                <th style="padding:1.1rem 1.5rem;text-align:left;font-size:0.85rem;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:#6c757d;">Alamat</th>
+                                <th style="padding:1.1rem 1.5rem;text-align:left;font-size:0.85rem;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:#6c757d;">Tanggal Daftar</th>
+                                <th style="padding:1.1rem 1.5rem;text-align:center;font-size:0.85rem;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:#6c757d;"></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -77,8 +79,16 @@
                                     </div>
                                 </td>
 
+                                <!-- Alamat -->
+                                <td style="padding:1.1rem 1.5rem;vertical-align:middle;max-width:220px;">
+                                    <div style="font-size:0.875rem;color:#555;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;line-height:1.5;">
+                                        {{ $user->alamat ?? '-' }}
+                                    </div>
+                                </td>
+
+                                <!-- Tanggal Daftar -->
                                 <td style="padding:1.1rem 1.5rem;font-size:0.95rem;color:#666;vertical-align:middle;white-space:nowrap;">
-                                    {{ $user->created_at->format('d-m-Y') }}
+                                    {{ $user->created_at->format('d F Y') }}
                                 </td>
 
                                 <!-- Aksi -->
@@ -99,7 +109,7 @@
                             </tr>
                             @empty
                             <tr>
-                                <td colspan="4" style="padding:60px;text-align:center;color:#9e6060;font-size:0.95rem;">
+                                <td colspan="5" style="padding:60px;text-align:center;color:#9e6060;font-size:0.95rem;">
                                     {{ isset($search) && $search ? '🔍 Tidak ada hasil untuk "'.$search.'"' : '📭 Belum ada data pengguna' }}
                                 </td>
                             </tr>

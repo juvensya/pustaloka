@@ -26,41 +26,63 @@ class PeminjamanController extends Controller
         return view('pengguna.pinjam', compact('data'));
     }
 
-    public function store(Request $request, $bukuId)
+    public function store(Request $request, $id)
     {
-        $request->validate([
-            'tanggal_kembali' => [
-                'required',
-                'date',
-                'after:today',
-                'before_or_equal:' . now()->addDays(14)->format('Y-m-d'),
-            ],
-        ]);
+        $buku = Buku::findOrFail($id);
 
-        $aktif = auth()->user()->peminjamans()
-            ->whereIn('status', ['menunggu', 'disetujui'])
-            ->count();
-
-        if ($aktif >= 2) {
-            return back()->with('error', 'Kamu sudah memiliki 2 peminjaman aktif.');
-        }
-
-        $buku = Buku::findOrFail($bukuId);
-
+        // Cek stok
         if ($buku->stock <= 0) {
             return back()->with('error', 'Stok buku habis.');
         }
 
+        // Cek batas peminjaman aktif
+        $peminjamAktif = auth()->user()->peminjamans()
+            ->where(function($q) {
+                $q->whereIn('status', ['menunggu', 'disetujui', 'terlambat'])
+                  ->orWhere(function($q2) {
+                      $q2->where('status', 'disetujui')
+                         ->where('tanggal_kembali', '<', now('Asia/Jakarta')->format('Y-m-d'));
+                  });
+            })->count();
+
+        if ($peminjamAktif >= 2) {
+            return back()->with('error', 'Kamu sudah memiliki 2 peminjaman aktif.');
+        }
+
+        // Simpan peminjaman
         Peminjaman::create([
             'user_id'         => auth()->id(),
-            'buku_id'         => $bukuId,
-            'tanggal_pinjam'  => now()->toDateString(),
+            'buku_id'         => $buku->id,
+            'tanggal_pinjam'  => $request->tanggal_pinjam,
             'tanggal_kembali' => $request->tanggal_kembali,
             'status'          => 'menunggu',
         ]);
 
-        return redirect()->route('pinjam.index')
-            ->with('success', 'Permintaan peminjaman berhasil dikirim! Silakan tunggu konfirmasi admin.');
+        // Kurangi stok saat menunggu
+        $buku->decrement('stock');
+
+        return back()->with('success', 'Permintaan peminjaman berhasil dikirim.');
+    }
+
+    // User batalkan peminjaman (hanya saat status menunggu)
+    public function cancel(Peminjaman $peminjaman)
+    {
+        // Pastikan milik user sendiri
+        if ($peminjaman->user_id !== auth()->id()) {
+            return back()->with('error', 'Akses tidak diizinkan.');
+        }
+
+        // Hanya bisa batalkan jika masih menunggu
+        if ($peminjaman->status !== 'menunggu') {
+            return back()->with('error', 'Peminjaman tidak bisa dibatalkan.');
+        }
+
+        // Kembalikan stok
+        $peminjaman->buku->increment('stock');
+
+        $peminjaman->delete();
+
+        return back()->with('success', 'Peminjaman berhasil dibatalkan.');
     }
 
     // User mengajukan request pengembalian buku
@@ -71,7 +93,7 @@ class PeminjamanController extends Controller
         }
 
         if (!in_array($peminjaman->status, ['disetujui', 'terlambat'])) {
-        
+            return back()->with('error', 'Status tidak memungkinkan untuk dikembalikan.');
         }
 
         $peminjaman->status = 'menunggu_kembali';
@@ -80,7 +102,6 @@ class PeminjamanController extends Controller
         return back()->with('success', 'Permintaan pengembalian berhasil dikirim! Silakan kembalikan buku ke perpustakaan.');
     }
 
-    
     public function downloadBukti(Peminjaman $peminjaman)
     {
         if ($peminjaman->user_id !== auth()->id()) {
@@ -136,6 +157,7 @@ class PeminjamanController extends Controller
             return back()->with('error', 'Peminjaman sudah diproses.');
         }
 
+        // Stok TIDAK berubah (sudah dikurangi saat menunggu)
         $peminjaman->status = 'disetujui';
         $peminjaman->save();
 
@@ -152,6 +174,9 @@ class PeminjamanController extends Controller
         $peminjaman->status = 'ditolak';
         $peminjaman->save();
 
+        // Kembalikan stok karena ditolak saat masih menunggu
+        $peminjaman->buku->increment('stock');
+
         return redirect()->route('admin.peminjaman.index')
             ->with('success', 'Peminjaman berhasil ditolak.');
     }
@@ -167,10 +192,19 @@ class PeminjamanController extends Controller
             'status' => 'required|in:disetujui,ditolak,dikembalikan'
         ]);
 
+        $statusLama = $peminjaman->status;
+
         $peminjaman->status = $request->status;
 
-        if ($request->status == 'dikembalikan') {
+        if ($request->status === 'dikembalikan') {
             $peminjaman->tanggal_dikembalikan = now();
+            // Kembalikan stok saat buku dikembalikan
+            $peminjaman->buku->increment('stock');
+        }
+
+        // Jika admin ubah status ke ditolak dari menunggu via updateStatus
+        if ($request->status === 'ditolak' && $statusLama === 'menunggu') {
+            $peminjaman->buku->increment('stock');
         }
 
         $peminjaman->save();
@@ -178,8 +212,14 @@ class PeminjamanController extends Controller
         return back()->with('success', 'Status berhasil diperbarui.');
     }
 
+    // Admin hapus data peminjaman
     public function destroy(Peminjaman $peminjaman)
     {
+        // Kalau masih menunggu dan dihapus, kembalikan stok
+        if ($peminjaman->status === 'menunggu') {
+            $peminjaman->buku->increment('stock');
+        }
+
         $peminjaman->delete();
 
         return back()->with('success', 'Data peminjaman berhasil dihapus.');

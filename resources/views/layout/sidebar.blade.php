@@ -25,26 +25,36 @@
             </a>
         </div>
 
+       
         <!-- Kelola Akun Dropdown -->
-        <div style="margin-bottom:6px;">
-            <button onclick="toggleMenu('menu-akun', 'arrow-akun')"
-                    style="width:100%;display:flex;align-items:center;justify-content:space-between;padding:0.85rem 1rem;color:rgba(255,255,255,0.9);background:transparent;border:none;border-radius:12px;cursor:pointer;transition:all 0.25s;font-weight:600;font-family:inherit;"
-                    onmouseover="this.style.background='#6B0000';this.style.paddingLeft='1.35rem'" onmouseout="this.style.background='transparent';this.style.paddingLeft='1rem'">
-                <div style="display:flex;align-items:center;">
-                    <i class="bi bi-people-fill" style="font-size:1.2rem;width:32px;"></i>
-                    <span>Kelola Akun</span>
-                </div>
-                <i id="arrow-akun" class="bi bi-chevron-right" style="font-size:0.8rem;transition:transform 0.3s;"></i>
-            </button>
-            <div id="menu-akun" style="display:none;margin-left:2rem;margin-top:4px;padding-left:1rem;border-left:2px solid #6B0000;">
-                <a href="{{ route('petugas.index') }}"
-                   style="display:flex;align-items:center;padding:0.6rem 1rem;color:rgba(255,255,255,0.8);text-decoration:none;border-radius:8px;font-size:0.9rem;transition:all 0.2s;"
-                   onmouseover="this.style.background='#6B0000';this.style.color='white';this.style.paddingLeft='1.35rem'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,0.8)';this.style.paddingLeft='1rem'">
-                    Data Petugas
-                </a>
-            </div>
+<div style="margin-bottom:6px;">
+    <button onclick="toggleMenu('menu-akun', 'arrow-akun')"
+            style="width:100%;display:flex;align-items:center;justify-content:space-between;padding:0.85rem 1rem;color:rgba(255,255,255,0.9);background:transparent;border:none;border-radius:12px;cursor:pointer;transition:all 0.25s;font-weight:600;font-family:inherit;"
+            onmouseover="this.style.background='#6B0000';this.style.paddingLeft='1.35rem'" onmouseout="this.style.background='transparent';this.style.paddingLeft='1rem'">
+        <div style="display:flex;align-items:center;">
+            <i class="bi bi-people-fill" style="font-size:1.2rem;width:32px;"></i>
+            <span>Kelola Akun</span>
         </div>
+        <i id="arrow-akun" class="bi bi-chevron-right" style="font-size:0.8rem;transition:transform 0.3s;"></i>
+    </button>
+    <div id="menu-akun" style="display:none;margin-left:2rem;margin-top:4px;padding-left:1rem;border-left:2px solid #6B0000;">
 
+        {{-- Hanya admin yang bisa lihat Data Petugas --}}
+        @if(auth()->user()->role === 'admin')
+        <a href="{{ route('petugas.index') }}"
+           style="display:flex;align-items:center;padding:0.6rem 1rem;color:rgba(255,255,255,0.8);text-decoration:none;border-radius:8px;font-size:0.9rem;transition:all 0.2s;"
+           onmouseover="this.style.background='#6B0000';this.style.color='white';this.style.paddingLeft='1.35rem'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,0.8)';this.style.paddingLeft='1rem'">
+            Data Petugas
+        </a>
+        @endif
+
+        <a href="{{ route('admin.users.index') }}"
+           style="display:flex;align-items:center;padding:0.6rem 1rem;color:rgba(255,255,255,0.8);text-decoration:none;border-radius:8px;font-size:0.9rem;transition:all 0.2s;"
+           onmouseover="this.style.background='#6B0000';this.style.color='white';this.style.paddingLeft='1.35rem'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,0.8)';this.style.paddingLeft='1rem'">
+            Data Pengguna
+        </a>
+    </div>
+</div>
         <!-- Kelola Buku Dropdown -->
         <div style="margin-bottom:6px;">
             <button onclick="toggleMenu('menu-buku', 'arrow-buku')"
@@ -66,6 +76,11 @@
                    style="display:flex;align-items:center;padding:0.6rem 1rem;color:rgba(255,255,255,0.8);text-decoration:none;border-radius:8px;font-size:0.9rem;transition:all 0.2s;"
                    onmouseover="this.style.background='#6B0000';this.style.color='white';this.style.paddingLeft='1.35rem'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,0.8)';this.style.paddingLeft='1rem'">
                     Kategori Buku
+                </a>
+                <a href="{{ route('admin.ulasan') }}"
+                   style="display:flex;align-items:center;padding:0.6rem 1rem;color:rgba(255,255,255,0.8);text-decoration:none;border-radius:8px;font-size:0.9rem;transition:all 0.2s;"
+                   onmouseover="this.style.background='#6B0000';this.style.color='white';this.style.paddingLeft='1.35rem'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,0.8)';this.style.paddingLeft='1rem'">
+                    Ulasan Buku
                 </a>
             </div>
         </div>
@@ -105,29 +120,18 @@
             </a>
         </div>
 
-        <!-- Logout -->
-        <div style="margin-bottom:6px;">
-            <form method="POST" action="{{ route('logout') }}">
-                @csrf
-                <button type="submit"
-                        onclick="return confirm('Yakin ingin logout?')"
-                        style="width:100%;display:flex;align-items:center;padding:0.85rem 1rem;color:rgba(255,255,255,0.9);background:transparent;border:none;border-radius:12px;cursor:pointer;transition:all 0.25s;font-weight:600;font-family:inherit;"
-                        onmouseover="this.style.background='#6B0000';this.style.paddingLeft='1.35rem'" onmouseout="this.style.background='transparent';this.style.paddingLeft='1rem'">
-                    <i class="bi bi-box-arrow-right" style="font-size:1.2rem;width:32px;"></i>
-                    <span>Logout</span>
-                </button>
-            </form>
-        </div>
-
     </div>
+
+    
+
 </div>
 
 <script>
 function toggleMenu(menuId, arrowId) {
-    const menu = document.getElementById(menuId);
+    const menu  = document.getElementById(menuId);
     const arrow = document.getElementById(arrowId);
     const isOpen = menu.style.display === 'block';
-    menu.style.display = isOpen ? 'none' : 'block';
+    menu.style.display  = isOpen ? 'none' : 'block';
     arrow.style.transform = isOpen ? 'rotate(0deg)' : 'rotate(90deg)';
 }
 </script>

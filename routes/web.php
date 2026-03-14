@@ -9,6 +9,7 @@ use App\Http\Controllers\KoleksiController;
 use App\Http\Controllers\PeminjamanController;
 use App\Http\Controllers\AkunController;
 use App\Http\Controllers\UlasanController;
+use App\Http\Controllers\LaporanController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -82,7 +83,7 @@ Route::middleware(['auth', 'role:pengguna'])->group(function () {
     Route::get('/pengguna/peminjaman-saya', [PeminjamanController::class, 'index'])->name('pinjam.index');
     Route::patch('/peminjaman/{peminjaman}/kembali', [PeminjamanController::class, 'requestKembali'])->name('peminjaman.requestKembali');
     Route::delete('/pengguna/peminjaman/{peminjaman}', [PeminjamanController::class, 'destroy'])->name('peminjaman.destroy');
-
+    Route::delete('/peminjaman/{id}/cancel', [PinjamController::class, 'cancel'])->name('pinjam.cancel');
     Route::get('/peminjaman/{peminjaman}/bukti-pdf', [PeminjamanController::class, 'downloadBukti'])->name('peminjaman.buktiPdf');
 
 
@@ -173,6 +174,17 @@ Route::get('/admin/pengembalian',
 
 Route::get('/admin/pengguna', [AkunController::class, 'index'])->name('admin.users.index');
 Route::delete('/admin/pengguna/{user}', [AkunController::class, 'destroy'])->name('admin.users.destroy');
+
+Route::get('/admin/ulasan', [UlasanController::class, 'adminIndex'])->name('admin.ulasan');
+// ULASAN (admin)
+Route::delete('/admin/ulasan/{id}', [UlasanController::class, 'adminDestroy'])->name('admin.ulasan.destroy');
+
+
+Route::get('/admin/laporan', [LaporanController::class, 'index'])->name('admin.laporan.index');
+Route::get('/admin/laporan/buku/pdf', [LaporanController::class, 'pdfBuku'])->name('admin.laporan.buku.pdf');
+Route::get('/admin/laporan/peminjaman/pdf', [LaporanController::class, 'pdfPeminjaman'])->name('admin.laporan.peminjaman.pdf');
+Route::get('/admin/laporan/pengembalian/pdf', [LaporanController::class, 'pdfPengembalian'])->name('admin.laporan.pengembalian.pdf');
+
 });
 
 

@@ -64,4 +64,19 @@ class UlasanController extends Controller
         return redirect()->route('ulasan.index')
             ->with('success','Ulasan berhasil diperbarui');
     }
+
+    public function adminIndex()
+{
+    $ulasans = Ulasan::with(['user','buku'])
+        ->latest()
+        ->get();
+
+    return view('admin.ulasan.ulasan', compact('ulasans'));
+}
+public function adminDestroy($id)
+{
+    $ulasan = Ulasan::findOrFail($id);
+    $ulasan->delete();
+    return redirect()->back()->with('success', 'Ulasan berhasil dihapus');
+}
 }

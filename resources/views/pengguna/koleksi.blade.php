@@ -2,85 +2,136 @@
 
 @section('content')
 
-<div class="max-w-4xl mx-auto px-4 py-10">
+<style>
+    .notif-auto {
+        animation: fadeOut 0.5s ease 3s forwards;
+    }
+    @keyframes fadeOut {
+        to { opacity: 0; height: 0; padding: 0; margin: 0; overflow: hidden; }
+    }
+</style>
 
-    {{-- Header --}}
-    <div class="bg-[#8B0000] rounded-xl px-7 py-4 mb-6 flex items-center justify-between flex-wrap gap-3">
-        <div>
-            <h3 class="text-white font-bold text-lg tracking-tight m-0">Koleksi Saya</h3>
-            <p class="text-white/60 text-xs mt-0.5 mb-0">Buku-buku yang kamu simpan</p>
+<div style="background:#f8f8f9;min-height:100vh;padding:2rem 0;">
+<div style="max-width:1100px;margin:0 auto;padding:0 1rem;">
+
+    {{-- NOTIF --}}
+    @if(session('success'))
+        <div class="notif-auto" style="background:#f0fdf4;border:1px solid #bbf7d0;border-left:4px solid #16a34a;border-radius:10px;padding:0.85rem 1.2rem;margin-bottom:1.25rem;font-size:0.875rem;color:#15803d;display:flex;align-items:center;gap:0.6rem;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            {{ session('success') }}
+        </div>
+    @endif
+    @if(session('error'))
+        <div class="notif-auto" style="background:#fff8f8;border:1px solid #fcd0d0;border-left:4px solid #8B0000;border-radius:10px;padding:0.85rem 1.2rem;margin-bottom:1.25rem;font-size:0.875rem;color:#8B0000;display:flex;align-items:center;gap:0.6rem;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8B0000" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            {{ session('error') }}
+        </div>
+    @endif
+
+    {{-- HEADER --}}
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.75rem;">
+        <div style="display:flex;align-items:center;gap:12px;">
+            <div style="width:4px;height:32px;background:#8B0000;border-radius:2px;"></div>
+            <div>
+                <h2 style="font-size:1.5rem;font-weight:800;color:#141516;margin:0;letter-spacing:-0.5px;">Koleksi Saya</h2>
+                <p style="color:#999;font-size:0.8rem;margin:0;">Buku-buku yang kamu simpan</p>
+            </div>
         </div>
         @if($koleksi->count() > 0)
-            <span class="bg-white text-[#8B0000] text-xs font-bold px-3 py-1 rounded-full">
-                {{ $koleksi->count() }} Buku
-            </span>
+            <span style="background:#fff0f0;color:#8B0000;font-size:0.75rem;font-weight:700;padding:0.3rem 0.75rem;border-radius:20px;">{{ $koleksi->count() }} Buku</span>
         @endif
     </div>
 
-    {{-- List --}}
-    @forelse($koleksi as $buku)
+    {{-- GRID --}}
+    @if($koleksi->count() > 0)
 
-        <div class="bg-white border border-gray-100 rounded-2xl mb-3 flex items-center overflow-hidden transition-all duration-200 hover:shadow-lg hover:border-gray-200 hover:-translate-y-0.5">
+        <div style="display:grid;grid-template-columns:repeat(4,240px);gap:1.25rem;justify-content:start;">
+        @forelse($koleksi as $buku)
 
-            {{-- Cover --}}
-            <div class="p-4 shrink-0 w-40">
-                <div class="rounded-xl overflow-hidden aspect-[2/3] bg-gray-100">
+            <div style="background:transparent;border-radius:12px;overflow:hidden;display:flex;flex-direction:column;">
+
+                {{-- COVER --}}
+                <div style="position:relative;border-radius:12px;overflow:hidden;">
                     <img src="{{ asset('uploads/buku/' . $buku->gambar) }}"
                          alt="{{ $buku->judul }}"
-                         class="w-full h-full object-cover transition-transform duration-300 hover:scale-105">
+                         style="width:100%;aspect-ratio:2/3;display:block;object-fit:cover;object-position:top;">
+
+                    {{-- Stok badge --}}
+                    <div style="position:absolute;top:7px;right:7px;">
+                        @if($buku->stock > 0)
+                            <span style="background:rgba(240,253,244,0.95);color:#16a34a;font-size:0.6rem;font-weight:700;padding:0.18rem 0.5rem;border-radius:20px;border:1px solid #bbf7d0;">
+                                Tersedia
+                            </span>
+                        @else
+                            <span style="background:rgba(255,248,248,0.95);color:#c0392b;font-size:0.6rem;font-weight:700;padding:0.18rem 0.5rem;border-radius:20px;border:1px solid #fcd0d0;">
+                                Habis
+                            </span>
+                        @endif
+                    </div>
                 </div>
-            </div>
 
-            {{-- Info --}}
-            <div class="flex-1 px-3 py-5 min-w-0">
-                <span class="inline-block bg-red-50 text-[#8B0000] border border-red-200 text-[0.7rem] font-semibold px-2.5 py-0.5 rounded-full uppercase tracking-wide mb-2">
-                    {{ $buku->kategori->nama_kategori ?? 'Tanpa Kategori' }}
-                </span>
-                <div class="font-bold text-gray-900 text-base leading-snug mb-1 truncate">{{ $buku->judul }}</div>
-                <div class="text-sm text-gray-400 mb-2">Penulis: <span class="text-gray-600 font-medium">{{ $buku->penulis }}</span></div>
-                @if($buku->stock > 0)
-                    <span class="inline-flex items-center gap-1 bg-green-50 text-green-700 border border-green-200 text-xs font-semibold px-2.5 py-0.5 rounded-full">
-                        ✓ Stok tersedia ({{ $buku->stock }})
-                    </span>
-                @else
-                    <span class="inline-flex items-center gap-1 bg-red-50 text-red-600 border border-red-200 text-xs font-semibold px-2.5 py-0.5 rounded-full">
-                        ✕ Stok habis
-                    </span>
-                @endif
-            </div>
+                {{-- INFO --}}
+                <div style="padding:0.5rem 0.2rem 0.35rem;display:flex;flex-direction:column;gap:0.12rem;">
+                    <div style="font-size:0.82rem;font-weight:800;color:#141516;line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">{{ $buku->judul }}</div>
+                    <div style="font-size:0.7rem;color:#aaa;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ $buku->penulis }}</div>
 
-            {{-- Aksi --}}
-            <div class="flex flex-col items-center gap-2 px-5 py-5 shrink-0">
-                <a href="{{ route('pengguna.buku.detail', $buku->id) }}"
-                   class="bg-[#8B0000] hover:bg-[#7c0707] text-white text-xs font-semibold px-5 py-2 rounded-lg transition-colors duration-200 no-underline text-center w-24 flex items-center justify-center">
-                    Detail
-                </a>
-                <form action="{{ route('koleksi.destroy', $buku->id) }}" method="POST">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit"
+                    {{-- RATING --}}
+                    @php
+                        $avgRating = $buku->ulasans->avg('rating') ?? 0;
+                        $totalUlasan = $buku->ulasans->count();
+                    @endphp
+                    <div style="display:flex;align-items:center;gap:1px;">
+                        @for($i = 1; $i <= 5; $i++)
+                            @if($i <= round($avgRating))
+                                <span style="color:#e8a000;font-size:1.15rem;line-height:1;">★</span>
+                            @else
+                                <span style="color:#ddd;font-size:1.15rem;line-height:1;">★</span>
+                            @endif
+                        @endfor
+                        <span style="font-size:0.68rem;color:#aaa;margin-left:3px;">({{ $totalUlasan }})</span>
+                    </div>
+                </div>
+
+                {{-- AKSI --}}
+                <div style="padding:0.35rem 0.2rem 0;display:flex;gap:0.35rem;">
+                    <a href="{{ route('pengguna.buku.detail', $buku->id) }}"
+                       style="flex:1;display:inline-flex;align-items:center;justify-content:center;padding:0.45rem;background:#8B0000;color:#fff;border-radius:7px;font-size:0.72rem;font-weight:700;text-decoration:none;">
+                        Detail
+                    </a>
+                    <form action="{{ route('koleksi.destroy', $buku->id) }}" method="POST" style="flex:1;">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit"
                             onclick="return confirm('Hapus buku ini dari koleksi?')"
-                            class="w-24 flex items-center justify-center border border-gray-200 hover:border-red-400 hover:text-red-500 hover:bg-red-50 text-gray-400 text-xs font-semibold px-5 py-2 rounded-lg transition-all duration-200 cursor-pointer bg-white">
-                        Hapus
-                    </button>
-                </form>
+                            style="width:100%;display:inline-flex;align-items:center;justify-content:center;padding:0.45rem;background:#fff8f8;color:#c0392b;border:1.5px solid #fcd0d0;border-radius:7px;font-size:0.72rem;font-weight:700;cursor:pointer;font-family:inherit;">
+                            Hapus
+                        </button>
+                    </form>
+                </div>
+
             </div>
 
+        @empty
+        @endforelse
         </div>
 
-    @empty
+    @else
 
-        <div class="text-center py-20 bg-gray-50 rounded-2xl border-2 border-dashed border-gray-200">
-            <h5 class="font-bold text-gray-700 mb-1">Koleksi masih kosong</h5>
-            <p class="text-gray-400 text-sm mb-5">Tambahkan buku favoritmu agar mudah ditemukan.</p>
-            <a href="{{ route('pengguna.buku.index') }}"
-               class="bg-[#8B0000] hover:bg-[#7c0707] text-white text-sm font-semibold px-5 py-2.5 rounded-lg transition-colors duration-200 no-underline inline-block">
+        <div style="background:#fff;border-radius:16px;border:1px solid #e9e9eb;padding:3rem;text-align:center;">
+            <div style="width:56px;height:56px;background:#fff0f0;border-radius:14px;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#8B0000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+            </div>
+            <div style="font-size:0.95rem;font-weight:700;color:#141516;margin-bottom:4px;">Koleksi masih kosong</div>
+            <p style="font-size:0.83rem;color:#aaa;margin:0 0 1.25rem;">Tambahkan buku favoritmu agar mudah ditemukan.</p>
+            <a href="{{ route('pengguna.index') }}"
+               style="display:inline-flex;align-items:center;padding:0.65rem 1.4rem;background:#8B0000;color:#fff;border-radius:9px;font-size:0.84rem;font-weight:700;text-decoration:none;">
                 Jelajahi Buku
             </a>
         </div>
 
-    @endforelse
+    @endif
 
+</div>
 </div>
 
 @endsection

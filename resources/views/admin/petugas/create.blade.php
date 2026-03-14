@@ -3,10 +3,8 @@
 @section('content')
 <div class="container-fluid">
     <div class="row">
-        <!-- Sidebar -->
         @include('layout.sidebar')
 
-        <!-- Main Content Area -->
         <div class="col p-4" style="background: #f8f9fa; min-height: 100vh;">
 
             <!-- Header -->
@@ -56,6 +54,19 @@
 
                     </div>
 
+                    {{-- Alamat --}}
+                    <div style="margin-bottom: 1.5rem;">
+                        <label style="display: block; font-size: 0.875rem; font-weight: 600; color: #2c3e50; margin-bottom: 0.5rem;">
+                            Alamat <span style="color: #dc3545;">*</span>
+                        </label>
+                        <textarea name="alamat" rows="3" placeholder="Masukkan alamat lengkap"
+                            style="width: 100%; padding: 14px 16px; border: 2px solid #e9ecef; border-radius: 10px; font-size: 0.95rem; outline: none; box-sizing: border-box; color: #2c3e50; resize: none; font-family: inherit;"
+                            onfocus="this.style.borderColor='#8B0000'" onblur="this.style.borderColor='#e9ecef'">{{ old('alamat') }}</textarea>
+                        @error('alamat')
+                            <p style="color: #dc3545; font-size: 0.8rem; margin-top: 0.35rem; margin-bottom: 0;">{{ $message }}</p>
+                        @enderror
+                    </div>
+
                     {{-- Password --}}
                     <div style="margin-bottom: 2rem;">
                         <label style="display: block; font-size: 0.875rem; font-weight: 600; color: #2c3e50; margin-bottom: 0.5rem;">
@@ -82,12 +93,12 @@
                     {{-- Buttons --}}
                     <div style="display: flex; gap: 12px;">
                         <button type="submit"
-                            style="background: #8B0000; color: white; padding: 13px 32px; border: none; border-radius: 8px; font-weight: 600; font-size: 0.95rem; cursor: pointer; transition: all 0.2s;"
+                            style="background: #8B0000; color: white; padding: 13px 32px; border: none; border-radius: 8px; font-weight: 600; font-size: 0.95rem; cursor: pointer;"
                             onmouseover="this.style.background='#6B0000'" onmouseout="this.style.background='#8B0000'">
                             Simpan Petugas
                         </button>
                         <a href="{{ route('petugas.index') }}"
-                            style="background: #f8f9fa; color: #6c757d; padding: 13px 32px; border-radius: 8px; font-weight: 600; font-size: 0.95rem; text-decoration: none; border: 2px solid #e9ecef; transition: all 0.2s;"
+                            style="background: #f8f9fa; color: #6c757d; padding: 13px 32px; border-radius: 8px; font-weight: 600; font-size: 0.95rem; text-decoration: none; border: 2px solid #e9ecef;"
                             onmouseover="this.style.background='#e9ecef'" onmouseout="this.style.background='#f8f9fa'">
                             Kembali
                         </a>

@@ -50,6 +50,9 @@ class AdminController extends Controller
     // =========================
     public function listPetugas(Request $request)
     {
+        if (auth()->user()->role !== 'admin') {
+        abort(403);
+    }
         $petugas = User::where('role', 'petugas')
             ->when($request->search, function ($query) use ($request) {
                 $query->where(function ($q) use ($request) {
@@ -74,24 +77,27 @@ class AdminController extends Controller
     // =========================
     // SIMPAN PETUGAS
     // =========================
+    
     public function storePetugas(Request $request)
-    {
-        $request->validate([
-            'name'     => 'required',
-            'email'    => 'required|email|unique:users',
-            'password' => 'required|min:6',
-        ]);
+{
+    $request->validate([
+        'name'     => 'required',
+        'email'    => 'required|email|unique:users',
+        'alamat'   => 'required',
+        'password' => 'required|min:6',
+    ]);
 
-        User::create([
-            'name'     => $request->name,
-            'email'    => $request->email,
-            'password' => Hash::make($request->password),
-            'role'     => 'petugas',
-        ]);
+    User::create([
+        'name'     => $request->name,
+        'email'    => $request->email,
+        'alamat'   => $request->alamat,
+        'password' => Hash::make($request->password),
+        'role'     => 'petugas',
+    ]);
 
-        return redirect()->route('petugas.index')
-            ->with('success', 'Petugas berhasil ditambahkan');
-    }
+    return redirect()->route('petugas.index')
+        ->with('success', 'Petugas berhasil ditambahkan');
+}
 
     // =========================
     // FORM EDIT PETUGAS
@@ -105,24 +111,25 @@ class AdminController extends Controller
     // =========================
     // UPDATE PETUGAS
     // =========================
-    public function updatePetugas(Request $request, $id)
-    {
-        $petugas = User::findOrFail($id);
+   public function updatePetugas(Request $request, $id)
+{
+    $petugas = User::findOrFail($id);
 
-        $request->validate([
-            'name'  => 'required',
-            'email' => 'required|email|unique:users,email,' . $id,
-        ]);
+    $request->validate([
+        'name'   => 'required',
+        'email'  => 'required|email|unique:users,email,' . $id,
+        'alamat' => 'required',
+    ]);
 
-        $petugas->update([
-            'name'  => $request->name,
-            'email' => $request->email,
-        ]);
+    $petugas->update([
+        'name'   => $request->name,
+        'email'  => $request->email,
+        'alamat' => $request->alamat,
+    ]);
 
-        return redirect()->route('petugas.index')
-            ->with('success', 'Petugas berhasil diupdate');
-    }
-
+    return redirect()->route('petugas.index')
+        ->with('success', 'Petugas berhasil diupdate');
+}
     // =========================
     // HAPUS PETUGAS
     // =========================
