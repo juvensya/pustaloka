@@ -11,7 +11,6 @@
 
             @include('layout.navbar')
 
-            {{-- Content area dengan padding --}}
             <div style="padding:1.5rem;">
 
                 <!-- Header -->
@@ -81,25 +80,14 @@
 
                                     <!-- Peminjam -->
                                     <td style="padding:1.1rem 1.5rem;vertical-align:middle;">
-                                        <div style="display:flex;align-items:center;gap:0.65rem;">
-                                            @if(!empty($p->user->foto))
-                                                <img src="{{ asset('uploads/users/'.$p->user->foto) }}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;border:2px solid #fde8e8;flex-shrink:0;">
-                                            @else
-                                                <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#8B0000,#c0392b);display:flex;align-items:center;justify-content:center;color:white;font-size:0.85rem;font-weight:700;flex-shrink:0;">
-                                                    {{ strtoupper(substr($p->user->name,0,1)) }}
-                                                </div>
-                                            @endif
-                                            <div>
-                                                <div style="font-weight:700;color:#1a0000;font-size:1.02rem;">{{ $p->user->name }}</div>
-                                                <div style="font-size:0.9rem;color:#9e6060;">{{ $p->user->email }}</div>
-                                            </div>
-                                        </div>
+                                        <div style="font-weight:700;color:#1a0000;font-size:1rem;">{{ $p->user->name }}</div>
+                                        <div style="font-size:0.85rem;color:#9e6060;">{{ $p->user->email }}</div>
                                     </td>
 
                                     <!-- Buku -->
                                     <td style="padding:1.1rem 1.5rem;vertical-align:middle;">
                                         <div style="font-size:1rem;font-weight:600;color:#2c3e50;">{{ $p->buku->judul }}</div>
-                                        <div style="font-size:0.9rem;color:#9e6060;">{{ $p->buku->penerbit ?? '-' }}</div>
+                                        <div style="font-size:0.85rem;color:#9e6060;">{{ $p->buku->penerbit ?? '-' }}</div>
                                     </td>
 
                                     <!-- Tgl Pinjam -->
@@ -127,7 +115,6 @@
                                                 'disetujui'        => ['#f0fdf4','#15803d','Disetujui'],
                                                 'menunggu_kembali' => ['#dbeafe','#1e40af','Pengembalian'],
                                                 'terlambat'        => ['#fff7ed','#c2410c','Terlambat'],
-                                                'dikembalikan'     => ['#dbeafe','#1e40af','Dikembalikan'],
                                                 'ditolak'          => ['#fef2f2','#8B0000','Ditolak'],
                                             ];
                                             [$sbg, $sc, $sl] = $badges[$p->status] ?? ['#f3f4f6','#666','—'];
@@ -175,17 +162,6 @@
                                                 <div style="height:1px;background:#f5f5f5;"></div>
                                             @endif
 
-                                            @if($p->status == 'terlambat')
-                                                <form action="{{ route('admin.peminjaman.updateStatus',$p->id) }}" method="POST">
-                                                    @csrf @method('PUT')
-                                                    <input type="hidden" name="status" value="dikembalikan">
-                                                    <button type="submit" onclick="return confirm('Konfirmasi buku sudah diterima?')" style="width:100%;text-align:left;padding:10px 14px;background:none;border:none;font-size:0.95rem;font-weight:600;color:#c2410c;cursor:pointer;display:flex;align-items:center;gap:8px;">
-                                                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Dikembalikan
-                                                    </button>
-                                                </form>
-                                                <div style="height:1px;background:#f5f5f5;"></div>
-                                            @endif
-
                                             <form action="{{ route('admin.peminjaman.destroy',$p->id) }}" method="POST" onsubmit="return confirm('Hapus data ini?')">
                                                 @csrf @method('DELETE')
                                                 <button type="submit" style="width:100%;text-align:left;padding:10px 14px;background:none;border:none;font-size:0.95rem;font-weight:600;color:#8B0000;cursor:pointer;display:flex;align-items:center;gap:8px;">
@@ -226,8 +202,8 @@
                     @endif
                 </div>
 
-            </div>{{-- end padding --}}
-        </div>{{-- end col --}}
+            </div>
+        </div>
     </div>
 </div>
 

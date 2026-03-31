@@ -119,37 +119,39 @@ class PeminjamanController extends Controller
     */
 
     public function indexAdmin(Request $request)
-    {
-        $search = $request->input('search');
+{
+    $search = $request->input('search');
 
-        $query = Peminjaman::with(['user', 'buku'])
-            ->where('status', '!=', 'dikembalikan')
-            ->latest();
+    $query = Peminjaman::with(['user', 'buku'])
+        ->where('status', '!=', 'dikembalikan')
+        ->latest();
 
-        if ($search) {
-            $query->whereHas('user', function ($q) use ($search) {
-                $q->where('name', 'like', "%$search%");
-            })->orWhereHas('buku', function ($q) use ($search) {
-                $q->where('judul', 'like', "%$search%");
+    if ($search) {
+        $query->where(function ($q) use ($search) {
+            $q->whereHas('user', function ($u) use ($search) {
+                $u->where('name', 'like', "%$search%");
+            })->orWhereHas('buku', function ($b) use ($search) {
+                $b->where('judul', 'like', "%$search%");
             });
-        }
-
-        $data = $query->paginate(10)->withQueryString();
-
-        // Cek terlambat
-        foreach ($data as $pinjam) {
-            if (
-                $pinjam->status == 'disetujui' &&
-                $pinjam->tanggal_kembali &&
-                now()->greaterThan($pinjam->tanggal_kembali)
-            ) {
-                $pinjam->status = 'terlambat';
-                $pinjam->save();
-            }
-        }
-
-        return view('admin.peminjaman.peminjaman', compact('data', 'search'));
+        });
     }
+
+    $data = $query->paginate(10)->withQueryString();
+
+    // Cek terlambat
+    foreach ($data as $pinjam) {
+        if (
+            $pinjam->status == 'disetujui' &&
+            $pinjam->tanggal_kembali &&
+            now()->greaterThan($pinjam->tanggal_kembali)
+        ) {
+            $pinjam->status = 'terlambat';
+            $pinjam->save();
+        }
+    }
+
+    return view('admin.peminjaman.peminjaman', compact('data', 'search'));
+}
 
     public function approve(Peminjaman $peminjaman)
     {

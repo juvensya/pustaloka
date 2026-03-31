@@ -59,7 +59,7 @@
             <td style="font-weight:600;">{{ $b->judul }}</td>
             <td>{{ $b->penulis }}</td>
             <td>{{ $b->penerbit }}</td>
-            <td>{{ $b->kategori->nama_kategori ?? '-' }}</td>
+            <td>{{ $b->kategoris->pluck('nama_kategori')->join(', ') ?: '-' }}</td>
             <td>{{ $b->tahun_terbit }}</td>
             <td style="text-align:center;font-weight:700;color:#8B0000;">{{ $b->stock }}</td>
         </tr>

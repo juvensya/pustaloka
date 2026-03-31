@@ -112,7 +112,7 @@
 
         <!-- Laporan -->
         <div style="margin-bottom:6px;">
-            <a href="#"
+            <a href="{{ route('admin.laporan.index') }}"
                style="display:flex;align-items:center;padding:0.85rem 1rem;color:rgba(255,255,255,0.9);text-decoration:none;border-radius:12px;transition:all 0.25s;font-weight:600;"
                onmouseover="this.style.background='#6B0000';this.style.paddingLeft='1.35rem'" onmouseout="this.style.background='transparent';this.style.paddingLeft='1rem'">
                 <i class="bi bi-file-earmark-bar-graph" style="font-size:1.2rem;width:32px;"></i>

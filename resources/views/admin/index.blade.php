@@ -18,7 +18,7 @@
                 <!-- Header -->
                 <div style="margin-bottom:2rem;">
                     <div style="display:flex;align-items:center;gap:12px;">
-                        <div style="width:4px;height:40px;background:#8B0000;border-radius:2px;"></div>
+                        <div style="width:4px;height:40px;background:#8B000;border-radius:2px;"></div>
                         <div>
                             <p style="font-size:0.8rem;font-weight:700;text-transform:uppercase;letter-spacing:0.15em;color:#8B0000;margin:0 0 2px;">Selamat datang, {{ auth()->user()->name }}</p>
                             <h2 style="font-size:1.75rem;font-weight:800;color:#141516;margin:0;letter-spacing:-0.5px;">Dashboard</h2>

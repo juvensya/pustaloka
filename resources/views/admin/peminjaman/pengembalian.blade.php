@@ -76,15 +76,6 @@
 
                                     <!-- Peminjam -->
                                     <td style="padding:1.1rem 1.5rem;vertical-align:middle;">
-                                        <div style="display:flex;align-items:center;gap:0.65rem;">
-                                            @if(!empty($pinjam->user->foto))
-                                                <img src="{{ asset('uploads/users/'.$pinjam->user->foto) }}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;border:2px solid #fde8e8;flex-shrink:0;">
-                                            @else
-                                                <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#8B0000,#c0392b);display:flex;align-items:center;justify-content:center;color:white;font-size:0.85rem;font-weight:700;flex-shrink:0;">
-                                                    {{ strtoupper(substr($pinjam->user->name,0,1)) }}
-                                                </div>
-                                            @endif
-                                            <div>
                                                 <div style="font-weight:700;color:#1a0000;font-size:1.02rem;">{{ $pinjam->user->name }}</div>
                                                 <div style="font-size:0.9rem;color:#9e6060;">{{ $pinjam->user->email }}</div>
                                             </div>

@@ -23,7 +23,7 @@
         <span style="font-size:16px; font-weight:700; color:#111;">Welcome</span>
     </div>
 
-    {{-- CENTER: Search --}}
+    <!-- {{-- CENTER: Search --}}
     <div style="display:flex; align-items:center; gap:8px; background:#f5f5f5; border-radius:999px; padding:8px 16px; width:260px;">
         <svg width="15" height="15" fill="none" stroke="#aaa" stroke-width="2" viewBox="0 0 24 24">
             <circle cx="11" cy="11" r="6"/><path stroke-linecap="round" d="M21 21l-4-4"/>
@@ -32,7 +32,7 @@
             background:none; border:none; outline:none;
             font-size:13px; color:#555; width:100%;
         "/>
-    </div>
+    </div> -->
 
     {{-- RIGHT: User dropdown --}}
     <div style="position:relative;">

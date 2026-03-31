@@ -26,12 +26,12 @@ class LaporanController extends Controller
 
     public function pdfBuku()
     {
-        $buku = Buku::with('kategori')->orderBy('judul')->get();
+    $buku = Buku::with('kategoris')->orderBy('judul')->get(); // ← 'kategori' → 'kategoris'
 
-        $pdf = Pdf::loadView('admin.laporan.pdf-buku', compact('buku'))
-                  ->setPaper('a4', 'landscape');
+    $pdf = Pdf::loadView('admin.laporan.pdf-buku', compact('buku'))
+              ->setPaper('a4', 'landscape');
 
-        return $pdf->download('laporan-buku.pdf');
+    return $pdf->download('laporan-buku.pdf');
     }
 
     public function pdfPeminjaman(Request $request)

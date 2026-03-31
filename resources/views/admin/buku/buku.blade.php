@@ -118,6 +118,9 @@
                                                 <a href="{{ route('buku.edit', $buku->id) }}" style="display: block; padding: 10px 16px; color: #2c3e50; text-decoration: none; font-size: 0.875rem;" onmouseover="this.style.background='#f8f9fa'" onmouseout="this.style.background='white'">
                                                     Edit
                                                 </a>
+                                                <a href="{{ route('buku.show', $buku->id) }}" style="display: block; padding: 10px 16px; color: #2c3e50; text-decoration: none; font-size: 0.875rem;" onmouseover="this.style.background='#f8f9fa'" onmouseout="this.style.background='white'">
+    Detail
+</a>
                                                 <form action="{{ route('buku.destroy', $buku->id) }}" method="POST" onsubmit="return confirm('Hapus buku ini?')">
                                                     @csrf
                                                     @method('DELETE')
@@ -161,6 +164,7 @@
                                 @if ($bukus->hasMorePages())
                                     <a href="{{ $bukus->nextPageUrl() }}" style="padding: 8px 16px; background: #f8f9fa; color: #666; border-radius: 6px; text-decoration: none; font-weight: 600;">Selanjutnya →</a>
                                 @endif
+                                
                             </div>
                         </div>
                     @endif

@@ -29,6 +29,12 @@ class BukuController extends Controller
         return view('admin.buku.buku', compact('bukus', 'kategoris'));
     }
 
+    public function show($id)
+    {
+    $buku = Buku::with(['kategoris', 'ulasans.user'])->findOrFail($id);
+    return view('admin.buku.detail-buku', compact('buku'));
+    }
+
     public function create()
     {
         $kategoris = Kategori::all();

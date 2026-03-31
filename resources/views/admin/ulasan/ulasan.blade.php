@@ -68,16 +68,7 @@
                             </td>
 
                             <td style="padding:1.1rem 1.5rem;vertical-align:middle;">
-                                <div style="display:flex;align-items:center;gap:0.65rem;">
-                                    @php
-                                        $nama    = $ulasan->user->name;
-                                        $inisial = strtoupper(substr($nama, 0, 1));
-                                        $colors  = ['#8B0000','#b91c1c','#c2410c','#b45309','#15803d','#1d4ed8','#7e22ce','#be185d'];
-                                        $color   = $colors[ord($inisial) % count($colors)];
-                                    @endphp
-                                    <div style="width:36px;height:36px;border-radius:50%;background:{{ $color }};display:flex;align-items:center;justify-content:center;color:white;font-size:0.85rem;font-weight:700;flex-shrink:0;">
-                                        {{ $inisial }}
-                                    </div>
+                                
                                     <div>
                                         <div style="font-weight:700;color:#1a0000;font-size:1.02rem;">{{ $ulasan->user->name }}</div>
                                         <div style="font-size:0.9rem;color:#9e6060;">{{ $ulasan->user->email }}</div>

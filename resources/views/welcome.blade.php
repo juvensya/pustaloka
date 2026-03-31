@@ -11,7 +11,7 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     @endif
 </head>
-<body class="bg-gray-50 font-sans">
+<body class="bg-white text-gray-800">
 
     {{-- NAV --}}
     <nav class="fixed top-0 w-full bg-white/95 backdrop-blur z-50 border-b border-red-100">
@@ -21,7 +21,7 @@
                 <span>{{ config('app.name', 'PUSTALOKA') }}</span>
             </div>
             <div class="hidden md:flex gap-8 text-sm text-gray-600">
-                <a href="#koleksi" class="hover:text-red-900 transition">Koleksi</a>
+                
                 <a href="#layanan" class="hover:text-red-900 transition">Layanan</a>
                 <a href="#kontak" class="hover:text-red-900 transition">Kontak</a>
             </div>
@@ -41,116 +41,103 @@
     </nav>
 
     {{-- HERO --}}
-    <section class="bg-gradient-to-br from-red-900 to-red-700 pt-36 pb-24 px-6">
-        <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-16 items-center">
-            <div>
-                <h1 class="text-5xl font-extrabold text-white leading-tight mb-6">
-                    Jelajahi Dunia <span class="text-red-200">Pengetahuan</span> Tanpa Batas
-                </h1>
-                <p class="text-white/80 text-lg leading-relaxed mb-10">
-                    PUSTALOKA menghadirkan ribuan koleksi buku digital untuk mendukung perjalanan belajar Anda. Akses kapan saja, di mana saja.
-                </p>
-                <div class="flex gap-4 flex-wrap">
-                    @if (Route::has('register'))
-                        <a href="{{ route('register') }}" class="bg-white text-red-900 px-8 py-4 rounded-full font-bold flex items-center gap-2 hover:-translate-y-1 transition">
-                            <i class="fas fa-user-plus"></i> Daftar Gratis
-                        </a>
-                    @endif
-                    <a href="#layanan" class="border-2 border-white text-white px-8 py-4 rounded-full font-bold flex items-center gap-2 hover:bg-white hover:text-red-900 transition">
-                        <i class="fas fa-play-circle"></i> Pelajari Lebih
-                    </a>
-                </div>
-            </div>
-            <div class="flex justify-center">
-                <svg class="w-80 animate-bounce" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" style="animation: float 6s ease-in-out infinite">
-                    <rect x="150" y="100" width="200" height="300" rx="10" fill="#fff" opacity="0.9"/>
-                    <rect x="170" y="120" width="160" height="20" rx="5" fill="#8B0000"/>
-                    <rect x="170" y="160" width="120" height="8" rx="4" fill="#ddd"/>
-                    <rect x="170" y="180" width="140" height="8" rx="4" fill="#ddd"/>
-                    <rect x="170" y="200" width="100" height="8" rx="4" fill="#ddd"/>
-                    <circle cx="250" cy="300" r="50" fill="#8B0000" opacity="0.2"/>
-                    <path d="M250 270L250 330M220 300L280 300" stroke="#8B0000" stroke-width="8" stroke-linecap="round"/>
-                </svg>
-            </div>
-        </div>
-    </section>
+    <section class="pt-32 pb-20 px-6">
+        <div class="max-w-3xl mx-auto text-center">
+            <span class="text-xs font-semibold tracking-widest text-red-900 uppercase mb-4 block">Perpustakaan Digital</span>
+            <h1 class="text-5xl md:text-6xl font-bold text-gray-900 leading-tight mb-6">
+                Dunia Pengetahuan<br>Ada di Sini
+            </h1>
+            <p class="text-gray-500 text-lg mb-10 max-w-xl mx-auto">
+                Ribuan koleksi buku digital, tersedia kapan saja dan di mana saja untuk mendukung perjalanan belajar Anda.
+            </p>
 
-    {{-- STATS --}}
-    <section class="bg-white py-12 px-6 -mt-10 relative z-10">
-        <div class="max-w-4xl mx-auto bg-white rounded-2xl shadow-lg grid grid-cols-2 md:grid-cols-4 gap-6 p-10 text-center">
-            @foreach([['10K+','Koleksi Buku'],['5K+','Anggota Aktif'],['50+','Kategori'],['24/7','Akses Online']] as $s)
-            <div>
-                <div class="text-4xl font-extrabold text-red-900">{{ $s[0] }}</div>
-                <div class="text-gray-500 mt-1 text-sm">{{ $s[1] }}</div>
-            </div>
-            @endforeach
         </div>
     </section>
 
     {{-- FEATURES --}}
-    <section class="py-24 px-6 bg-gray-50" id="layanan">
-        <div class="max-w-6xl mx-auto">
-            <div class="text-center mb-14">
-                <h2 class="text-4xl font-extrabold text-gray-900 mb-3">Layanan Unggulan Kami</h2>
-                <p class="text-gray-500">Nikmati berbagai kemudahan dalam mengakses perpustakaan</p>
+    <section class="py-20 px-6" id="layanan">
+        <div class="max-w-4xl mx-auto">
+            <div class="mb-12">
+                <h2 class="text-3xl font-bold text-gray-900 mb-2">Layanan Kami</h2>
+                <p class="text-gray-400">Kemudahan mengakses perpustakaan modern</p>
             </div>
-            <div class="grid md:grid-cols-3 gap-8">
-                @foreach([
-                    ['fa-laptop','Perpustakaan Digital','Akses ribuan e-book dan jurnal digital kapan saja dari perangkat Anda.'],
-                    ['fa-bookmark','Sistem Peminjaman','Peminjaman mudah dengan notifikasi otomatis untuk pengingat pengembalian.'],
-                    ['fa-users','Ruang Baca','Fasilitas modern, tenang, dilengkapi WiFi gratis untuk kenyamanan Anda.'],
-                    ['fa-search','Pencarian Cerdas','Temukan buku dengan sistem pencarian berbasis AI yang canggih.'],
-                    ['fa-mobile-alt','Aplikasi Mobile','Akses via aplikasi mobile yang user-friendly, tersedia iOS dan Android.'],
-                    ['fa-chalkboard-teacher','Program Literasi','Ikuti workshop, diskusi buku, dan program literasi secara berkala.'],
-                ] as $f)
-                <div class="bg-white p-10 rounded-2xl border-2 border-transparent hover:border-red-900 hover:-translate-y-2 transition group">
-                    <div class="w-16 h-16 bg-gradient-to-br from-red-900 to-red-600 rounded-xl flex items-center justify-center mb-6">
-                        <i class="fas {{ $f[0] }} text-2xl text-white"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-gray-900 mb-3">{{ $f[1] }}</h3>
-                    <p class="text-gray-500 leading-relaxed">{{ $f[2] }}</p>
-                </div>
-                @endforeach
-            </div>
-        </div>
-    </section>
+            <div class="grid md:grid-cols-2 gap-5">
 
-    {{-- BOOKS --}}
-    <section class="py-24 px-6 bg-white" id="koleksi">
-        <div class="max-w-6xl mx-auto">
-            <div class="text-center mb-14">
-                <h2 class="text-4xl font-extrabold text-gray-900 mb-3">Koleksi Populer</h2>
-                <p class="text-gray-500">Buku-buku yang paling banyak dibaca bulan ini</p>
-            </div>
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-                @foreach([
-                    ['fa-book','Filosofi Teras','Henry Manampiring','Filsafat'],
-                    ['fa-code','Clean Code','Robert C. Martin','Teknologi'],
-                    ['fa-graduation-cap','Sapiens','Yuval Noah Harari','Sejarah'],
-                    ['fa-lightbulb','Atomic Habits','James Clear','Self Help'],
-                ] as $b)
-                <div class="bg-gray-50 rounded-2xl p-6 hover:-translate-y-2 hover:shadow-lg transition cursor-pointer">
-                    <div class="h-52 bg-gradient-to-br from-red-900 to-red-600 rounded-xl flex items-center justify-center text-5xl text-white mb-5">
-                        <i class="fas {{ $b[0] }}"></i>
+                <div class="p-7 rounded-xl border border-gray-100 hover:border-red-200 hover:bg-red-50/30 transition">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 bg-red-900 rounded-lg flex items-center justify-center shrink-0">
+                            <i class="fas fa-laptop text-sm text-white"></i>
+                        </div>
+                        <h3 class="font-semibold text-gray-900">Perpustakaan Digital</h3>
                     </div>
-                    <div class="font-bold text-gray-900 mb-1">{{ $b[1] }}</div>
-                    <div class="text-gray-400 text-sm mb-3">{{ $b[2] }}</div>
-                    <span class="bg-red-100 text-red-900 text-xs font-semibold px-3 py-1 rounded-full">{{ $b[3] }}</span>
+                    <p class="text-gray-500 text-sm leading-relaxed mb-4">Akses lebih dari 10.000 judul e-book, jurnal ilmiah, dan majalah digital dari berbagai bidang keilmuan. Koleksi diperbarui setiap bulan untuk memastikan konten selalu relevan dan terkini.</p>
+                    <ul class="space-y-1.5 text-sm text-gray-400">
+                        <li class="flex items-center gap-2"><i class="fas fa-check text-red-900 text-xs"></i> Tersedia dalam format PDF & ePub</li>
+                        <li class="flex items-center gap-2"><i class="fas fa-check text-red-900 text-xs"></i> Dapat diakses dari semua perangkat</li>
+                        <li class="flex items-center gap-2"><i class="fas fa-check text-red-900 text-xs"></i> Mode baca offline tersedia</li>
+                    </ul>
                 </div>
-                @endforeach
+
+                <div class="p-7 rounded-xl border border-gray-100 hover:border-red-200 hover:bg-red-50/30 transition">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 bg-red-900 rounded-lg flex items-center justify-center shrink-0">
+                            <i class="fas fa-bookmark text-sm text-white"></i>
+                        </div>
+                        <h3 class="font-semibold text-gray-900">Sistem Peminjaman</h3>
+                    </div>
+                    <p class="text-gray-500 text-sm leading-relaxed mb-4">Pinjam dan kembalikan buku fisik maupun digital dengan mudah melalui platform kami. Sistem notifikasi otomatis akan mengingatkan Anda sebelum batas waktu pengembalian tiba.</p>
+                    <ul class="space-y-1.5 text-sm text-gray-400">
+                        <li class="flex items-center gap-2"><i class="fas fa-check text-red-900 text-xs"></i> Maksimal 5 buku per anggota</li>
+                        <li class="flex items-center gap-2"><i class="fas fa-check text-red-900 text-xs"></i> Perpanjangan online tanpa antri</li>
+                        <li class="flex items-center gap-2"><i class="fas fa-check text-red-900 text-xs"></i> Notifikasi via email & WhatsApp</li>
+                    </ul>
+                </div>
+
+                <div class="p-7 rounded-xl border border-gray-100 hover:border-red-200 hover:bg-red-50/30 transition">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 bg-red-900 rounded-lg flex items-center justify-center shrink-0">
+                            <i class="fas fa-search text-sm text-white"></i>
+                        </div>
+                        <h3 class="font-semibold text-gray-900">Pencarian Cerdas</h3>
+                    </div>
+                    <p class="text-gray-500 text-sm leading-relaxed mb-4">Mesin pencari kami didukung teknologi AI yang memahami konteks permintaan Anda. Temukan buku yang tepat berdasarkan judul, pengarang, topik, atau bahkan cuplikan isi buku.</p>
+                    <ul class="space-y-1.5 text-sm text-gray-400">
+                        <li class="flex items-center gap-2"><i class="fas fa-check text-red-900 text-xs"></i> Pencarian berbasis kata kunci & topik</li>
+                        <li class="flex items-center gap-2"><i class="fas fa-check text-red-900 text-xs"></i> Filter kategori, tahun, dan bahasa</li>
+                        <li class="flex items-center gap-2"><i class="fas fa-check text-red-900 text-xs"></i> Rekomendasi buku personal</li>
+                    </ul>
+                </div>
+
+                <div class="p-7 rounded-xl border border-gray-100 hover:border-red-200 hover:bg-red-50/30 transition">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 bg-red-900 rounded-lg flex items-center justify-center shrink-0">
+                            <i class="fas fa-chalkboard-teacher text-sm text-white"></i>
+                        </div>
+                        <h3 class="font-semibold text-gray-900">Program Literasi</h3>
+                    </div>
+                    <p class="text-gray-500 text-sm leading-relaxed mb-4">Tingkatkan budaya baca melalui berbagai program yang kami selenggarakan secara rutin. Mulai dari diskusi buku, bedah karya, hingga workshop penulisan kreatif bersama penulis ternama.</p>
+                    <ul class="space-y-1.5 text-sm text-gray-400">
+                        <li class="flex items-center gap-2"><i class="fas fa-check text-red-900 text-xs"></i> Workshop & diskusi bulanan</li>
+                        <li class="flex items-center gap-2"><i class="fas fa-check text-red-900 text-xs"></i> Tersedia sesi online & offline</li>
+                        <li class="flex items-center gap-2"><i class="fas fa-check text-red-900 text-xs"></i> Sertifikat keikutsertaan resmi</li>
+                    </ul>
+                </div>
+
             </div>
         </div>
     </section>
 
     {{-- CTA --}}
-    <section class="bg-gradient-to-br from-red-900 to-red-700 py-24 px-6 text-center text-white">
-        <h2 class="text-4xl font-extrabold mb-4">Mulai Perjalanan Literasi Anda</h2>
-        <p class="text-white/70 text-lg mb-10">Daftar sekarang dan dapatkan akses gratis ke ribuan koleksi buku digital.</p>
-        @if (Route::has('register'))
-            <a href="{{ route('register') }}" class="bg-white text-red-900 px-10 py-4 rounded-full font-bold inline-flex items-center gap-2 hover:-translate-y-1 transition">
-                <i class="fas fa-user-plus"></i> Daftar Sekarang
-            </a>
-        @endif
+    <section class="py-20 px-6 text-center">
+        <div class="max-w-xl mx-auto">
+            <h2 class="text-3xl font-bold text-gray-900 mb-3">Mulai Sekarang</h2>
+            <p class="text-gray-400 mb-8">Daftar gratis dan akses ribuan koleksi buku digital.</p>
+            @if (Route::has('register'))
+                <a href="{{ route('register') }}" class="bg-red-900 text-white px-8 py-3 rounded-full font-semibold inline-block hover:bg-red-800 transition">
+                    Daftar Sekarang
+                </a>
+            @endif
+        </div>
     </section>
 
     {{-- FOOTER --}}
@@ -171,7 +158,6 @@
                 <h4 class="font-bold text-gray-900 mb-4">Menu</h4>
                 <ul class="space-y-3 text-sm text-gray-500">
                     <li><a href="#" class="hover:text-red-900 transition">Beranda</a></li>
-                    <li><a href="#koleksi" class="hover:text-red-900 transition">Koleksi</a></li>
                     <li><a href="#layanan" class="hover:text-red-900 transition">Layanan</a></li>
                 </ul>
             </div>
